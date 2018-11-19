@@ -1,4 +1,4 @@
-package Server.dataLayer;
+package dataLayer;
 
 import java.io.*;
 import java.net.Socket;

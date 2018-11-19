@@ -1,4 +1,5 @@
-package Server.dataLayer;
+package dataLayer;
+
 public class Packet implements java.io.Serializable {
 
     private int id;

@@ -1,7 +1,6 @@
-package Server;
 
 import java.net.ServerSocket;
-import Server.dataLayer.ClientHandler;
+import dataLayer.ClientHandler;
 
 public class Program {
 
