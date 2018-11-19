@@ -1,6 +1,6 @@
-package Server.Interfaces.Idata;
+package Interfaces.Idata;
 
-import Server.Interfaces.Ilogic.Ilogic;
+import Interfaces.Ilogic.Ilogic;
 import Server.Interfaces.All.IUser;
 import Server.Interfaces.All.ISystemLog;
 import Server.Interfaces.All.iAuthenticate;

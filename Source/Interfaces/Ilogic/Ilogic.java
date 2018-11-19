@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Server.Interfaces.Ilogic;
+package Interfaces.Ilogic;
 
 import Server.Interfaces.All.IFileChooser;
 import Server.Interfaces.All.IUser;
 import Server.Interfaces.All.ISystemLog;
 import Server.Interfaces.All.iAuthenticate;
-import Server.Interfaces.Idata.Idata;
+import Interfaces.Idata.Idata;
 
 /**
  *

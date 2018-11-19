@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Server.dataLayer;
+package dataLayer;
 
 /**
  *
  * @author mehgn
  */
-import Server.Interfaces.Ilogic.Ilogic;
+import Interfaces.Ilogic.Ilogic;
 import Server.LogicLayer.SystemLog;
-import Server.Interfaces.Idata.Idata;
+import Interfaces.Idata.Idata;
 import java.util.List;
 
 /**
