@@ -1,4 +1,4 @@
-package Server.dataLayer;
+package dataLayer;
 
 import Server.Interfaces.All.IUser;
 import Server.dataLayer.DBconnect;
