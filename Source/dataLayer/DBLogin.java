@@ -13,13 +13,20 @@ import java.util.ArrayList;
  *
  * @author mehgn
  */
-public class DBLogin implements iAuthenticate{
-   public String login(String UP){
-       DBconnect connect = new DBconnect();
-       String[] userPass = UP.split(" ");
-       String query = "SELECT * FROM users WHERE email = " + userPass[0];
-       ArrayList<String> result = connect.sendQuery(query);
+public class DBLogin implements iAuthenticate {
 
-       return "";
-   }
+    public String login(String UP) {
+        String answer;
+        DBconnect connect = new DBconnect();
+        String[] userPass = UP.split(" ");
+        String query = "SELECT type FROM users WHERE email='" + userPass[0] + "' AND password='" + userPass[1] + "';";
+        ArrayList<String> result = connect.sendQuery(query);
+        if (result.size() == 0) {
+            answer = "invalid";
+        } else {
+            answer = result.get(0);
+        }
+
+        return answer;
+    }
 }

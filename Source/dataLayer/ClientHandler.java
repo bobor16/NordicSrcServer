@@ -53,6 +53,7 @@ public class ClientHandler extends Thread {
                         String answer = login.login((String)inputPackage.getObject());
                         System.out.println(answer);
                         outputPackage = new Packet(1, answer.toLowerCase());
+                        out.writeObject(outputPackage);
                         break;
                     default:
                         log("Received unknown packet with id " + inputPackage.getId() + " from client " + clientNumber);
