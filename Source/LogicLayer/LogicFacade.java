@@ -104,4 +104,7 @@ public class LogicFacade implements Interfaces.Ilogic.Ilogic {
     public Boolean passwordCheck(String password) {
         return passwordChecker.checkPassword(password);
     }
+
+    @Override
+    public String login(String lol){return "";}
 }

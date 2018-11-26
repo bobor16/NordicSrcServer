@@ -46,6 +46,14 @@ public class ClientHandler extends Thread {
                     case -1:
                         run = false;
                         break;
+
+                    case 1:
+                        DBLogin login = new DBLogin();
+                        System.out.println(inputPackage.getObject());
+                        String answer = login.login((String)inputPackage.getObject());
+                        System.out.println(answer);
+                        outputPackage = new Packet(1, answer.toLowerCase());
+                        break;
                     default:
                         log("Received unknown packet with id " + inputPackage.getId() + " from client " + clientNumber);
                         break;

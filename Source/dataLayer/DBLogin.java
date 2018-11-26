@@ -3,15 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Server.dataLayer;
+package dataLayer;
 
-import Server.Interfaces.All.iAuthenticate;
+import Interfaces.All.iAuthenticate;
+
+import java.util.ArrayList;
 
 /**
  *
  * @author mehgn
  */
 public class DBLogin implements iAuthenticate{
+   public String login(String UP){
+       DBconnect connect = new DBconnect();
+       String[] userPass = UP.split(" ");
+       String query = "SELECT * FROM users WHERE email = " + userPass[0];
+       ArrayList<String> result = connect.sendQuery(query);
 
-   
+       return "";
+   }
 }

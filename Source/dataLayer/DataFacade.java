@@ -103,5 +103,8 @@ public class DataFacade implements Idata {
     public void setEmail(String email) {
         DBUsers.setEmail(email);
     }
+
+    @Override
+    public String login(String query){return "";}
 }
 

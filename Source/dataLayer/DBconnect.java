@@ -1,4 +1,4 @@
-package Server.dataLayer;
+package dataLayer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,6 +21,22 @@ public class DBconnect {
     String user = "si3_2018_group_4";
     String password = "auto92-modal";
 
+    public DBconnect(){
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.getMessage();
+        }
+        try {
+            DriverManager.getConnection(url, user, password);
+            System.out.println("Successfully connected to the server!");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Failed to connect to server");
+        }
+    }
+
     public Connection dbConnection() {
         try {
             Class.forName("org.postgresql.Driver");
@@ -29,12 +45,10 @@ public class DBconnect {
         }
         try {
             DriverManager.getConnection(url, user, password);
-//                JOptionPane.showMessageDialog(null, "Connected");
             System.out.println("Successfully connected to the server!");
 
         } catch (SQLException ex) {
             Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
-//                JOptionPane.showMessageDialog(null, "Failed to connect");
             System.out.println("Failed to connect to server");
         }
 
@@ -51,7 +65,7 @@ public class DBconnect {
 
         try (Connection db = DriverManager.getConnection(url, user, password);
                 Statement st = db.createStatement();
-                ResultSet rs = st.executeQuery(query);) {
+                ResultSet rs = st.executeQuery(query)) {
             while (rs.next()) {
                 int i = 1;
                 while (i < rs.getMetaData().getColumnCount()) {
@@ -106,10 +120,4 @@ public class DBconnect {
 //            }
 //        }
 //    }
-
-    public static void main(String[] args) throws SQLException {
-        DBconnect db = new DBconnect();
-        db.sendQuery("SELECT email, password FROM users");
-//        db.viewTable();
-    }
 }
