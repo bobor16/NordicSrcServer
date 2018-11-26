@@ -5,7 +5,7 @@
  */
 package dataLayer;
 
-import Server.Interfaces.All.ISystemLog;
+import Interfaces.All.ISystemLog;
 import java.util.ArrayList;
 import java.util.List;
 

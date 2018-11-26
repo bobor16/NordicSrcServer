@@ -5,10 +5,10 @@
  */
 package Interfaces.Ilogic;
 
-import Server.Interfaces.All.IFileChooser;
-import Server.Interfaces.All.IUser;
-import Server.Interfaces.All.ISystemLog;
-import Server.Interfaces.All.iAuthenticate;
+import Interfaces.All.IFileChooser;
+import Interfaces.All.IUser;
+import Interfaces.All.ISystemLog;
+import Interfaces.All.iAuthenticate;
 import Interfaces.Idata.Idata;
 
 /**
