@@ -28,7 +28,7 @@ public class DBconnect {
             e.getMessage();
         }
         try {
-            DriverManager.getConnection(url, user, password);
+            connection = DriverManager.getConnection(url, user, password);
             System.out.println("Successfully connected to the server!");
 
         } catch (SQLException ex) {
@@ -57,31 +57,40 @@ public class DBconnect {
 
     public ArrayList<String> sendQuery(String query) {
         ArrayList<String> result = new ArrayList<>();
+
         try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(query);
+                while (rs.next()) {
+                    int i = 1;
+                    while (i < rs.getMetaData().getColumnCount()) {
+                        //System.out.print(rs.getString(i) + " ");
+                        result.add(rs.getString(i));
+                        i++;
+                    }
+                    //System.out.println(rs.getString(i) + " ");
+                    result.add(rs.getString(i));
+                }
+                System.out.println(result);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        try (Connection db = DriverManager.getConnection(url, user, password);
-                Statement st = db.createStatement();
-                ResultSet rs = st.executeQuery(query)) {
-            while (rs.next()) {
-                int i = 1;
-                while (i < rs.getMetaData().getColumnCount()) {
-                    //System.out.print(rs.getString(i) + " ");
-                    result.add(rs.getString(i));
-                    i++;
-                }
-                //System.out.println(rs.getString(i) + " ");
-                result.add(rs.getString(i));
-            }
-            System.out.println(result);
-            //return result;
-        } catch (Exception e) {
-            System.out.println(e);
-        }
         return result;
+    }
+
+    public String sendStatement(String statement){
+        System.out.println("Got the statement: " + statement);
+        try {
+            Statement st = connection.createStatement();
+            System.out.println("Statement created, executing update");
+            st.executeUpdate(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "failed";
+        }
+        System.out.println("successfully executed update");
+        return "success";
     }
 
 //    public static void viewTable() throws SQLException {

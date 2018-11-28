@@ -2,6 +2,7 @@ package dataLayer;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ClientHandler extends Thread {
@@ -71,9 +72,10 @@ public class ClientHandler extends Thread {
                     "You successfully connected to the server. You are client: " + clientNumber + ".\n"
                     + "Type 'exit' to disconnect from the server.");
             outputQueue.add(outputPackage);
+            String answer;
 
             while (run) {
-                if (!inputQueue.isEmpty()){
+                if (!inputQueue.isEmpty()) {
                     inputPackage = inputQueue.poll();
                     if (inputPackage == null) {
                         break;
@@ -87,19 +89,22 @@ public class ClientHandler extends Thread {
                         case 1:
                             DBLogin login = new DBLogin();
                             System.out.println(inputPackage.getObject());
-                            String answer = login.login((String)inputPackage.getObject());
+                            answer = login.login((String) inputPackage.getObject());
                             System.out.println(answer);
                             outputPackage = new Packet(1, answer.toLowerCase());
-                            out.writeObject(outputPackage);
+                            outputQueue.add(outputPackage);
                             break;
+                        case 2:
+                            DBRegister register = new DBRegister();
+                            answer = register.register((HashMap<String, String>) inputPackage.getObject());
+                            outputPackage = new Packet(2, answer);
+                            outputQueue.add(outputPackage);
                         default:
                             log("Received unknown packet with id " + inputPackage.getId() + " from client " + clientNumber);
                             break;
                     }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         } finally {
             try {
                 inputThread.join();
