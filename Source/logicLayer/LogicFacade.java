@@ -3,58 +3,59 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dataLayer;
+package logicLayer;
 
 /**
  *
  * @author mehgn
  */
 import interfaces.iLogic.Ilogic;
-import logicLayer.SystemLog;
 import interfaces.iData.Idata;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author mehgn
  */
-public class DataFacade implements Idata {
+public class LogicFacade implements interfaces.iLogic.Ilogic {
 
     private static Idata data;
     private static Ilogic logic;
-    DBSystemLog DBSystemlog;
 
-    public DataFacade() {
-        DBSystemlog = new DBSystemLog();
-    }
-
-    public static Idata getInstance() {
-        return data;
-    }
+    private PasswordValidation passwordChecker = new PasswordValidation();
 
     @Override
-    public void injectLogic(Ilogic logic) {
-        this.logic = logic;
+    public void injectData(Idata data) {
+        this.data = data;
+    }
+
+    public LogicFacade() {
+    }
+
+    public static Ilogic getInstance() {
+        return logic;
     }
 
     @Override
     public ArrayList getSystemLog() {
-        return DBSystemlog.getSystemLog();
+        return data.getSystemLog();
     }
 
     @Override
     public void setSystemLog(String user, String action) {
-        DBSystemlog.setSystemLog(user, action);
+        data.setSystemLog(user, action);
     }
 
     @Override
     public void clearSystemLog() {
-        DBSystemlog.clearSystemLog();
+        data.clearSystemLog();
     }
 
     @Override
-    public String login(String query){return "";}
-}
+    public Boolean passwordCheck(String password) {
+        return passwordChecker.checkPassword(password);
+    }
 
+    @Override
+    public String login(String lol){return "";}
+}

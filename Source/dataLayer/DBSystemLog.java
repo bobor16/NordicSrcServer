@@ -5,55 +5,32 @@
  */
 package dataLayer;
 
-import Interfaces.All.ISystemLog;
+import interfaces.all.ISystemLog;
+
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 /**
  *
  * @author mehgn
  */
 public class DBSystemLog implements ISystemLog {
-    
     @Override
-    public List getSystemLog() {
-        List systemLog = new ArrayList();
-        try {
-//            dbConnect();
-//            Connection db = connection;
-//
-//            Statement st = db.createStatement();
-//            ResultSet rs = st.executeQuery("SELECT * FROM SystemLog");
-//            while (rs.next()) {
-//
-//                try {
-//                    tempSystemLog.setSystemLog(rs.getString(1));
-//                    tempSystemLog = new SystemLog(log);
-//                    systemLog.add(tempSystemLog);
-//                } catch (Exception e) {
-//                    System.out.println(e);
-//                }
-//            }
-//            rs.close();
-//            st.close();
-    
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            return systemLog;
-        }
+    public ArrayList getSystemLog() {
+        DBconnect connection = new DBconnect();
+        ArrayList<ArrayList> result = connection.sendQuery("SELECT * FROM SystemLog");
+        return result;
     }
 
     @Override
-    public void setSystemLog(String systemLogText) {
-//        SystemLog tempSystemLog = new SystemLog();
-        System.out.println("SystemLog has been set to " + systemLogText);
+    public void setSystemLog(String user, String action) {
+        Date date = new Date();
+        DBconnect connection = new DBconnect();
+        connection.sendStatement("INSERT INTO log (userid, action, timestamp) VALUES ('" + user + "', '" + action + "', '" +  date.toString() + "');");
     }
 
     @Override
     public void clearSystemLog() {
+
     }
-    
-    
-    
 }

@@ -2,6 +2,7 @@ package dataLayer;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -18,10 +19,13 @@ public class ClientHandler extends Thread {
     private Thread outputThread;
     private Thread inputThread;
     private boolean run;
+    private String user;
+    private DBSystemLog log;
 
     public ClientHandler(Socket socket, int clientNumber){
         this.socket = socket;
         this.clientNumber = clientNumber;
+        this.user = Integer.toString(clientNumber);
         try {
             this.out = new ObjectOutputStream(socket.getOutputStream());
             this.in = new ObjectInputStream(socket.getInputStream());
@@ -33,6 +37,7 @@ public class ClientHandler extends Thread {
         this.outputPackage = null;
         this.inputPackage = null;
         this.run = true;
+        this.log = new DBSystemLog();
     }
 
     @Override
@@ -41,7 +46,6 @@ public class ClientHandler extends Thread {
             this.outputThread = new Thread(() -> {
                 currentThread().setName("outputThread"+clientNumber);
                 while(run || !outputQueue.isEmpty()){
-                    //System.out.println(currentThread().getName());
                     if (!outputQueue.isEmpty()){
                         try {
                             out.writeObject(outputQueue.poll());
@@ -55,7 +59,6 @@ public class ClientHandler extends Thread {
             this.inputThread = new Thread(() -> {
                 currentThread().setName("inputThread"+clientNumber);
                 while (run) {
-                    //System.out.println(currentThread().getName());
                     try {
                         inputQueue.add((Packet)in.readObject());
                     } catch (IOException | ClassNotFoundException e) {
@@ -67,10 +70,8 @@ public class ClientHandler extends Thread {
             outputThread.start();
             inputThread.start();
 
-            log("Client " + clientNumber + " has connected!");
-            outputPackage = new Packet(0,
-                    "You successfully connected to the server. You are client: " + clientNumber + ".\n"
-                    + "Type 'exit' to disconnect from the server.");
+            System.out.println("Client " + clientNumber + " has connected!");
+            outputPackage = new Packet(0,"You successfully connected to the server. You are client: " + clientNumber);
             outputQueue.add(outputPackage);
             String answer;
 
@@ -85,22 +86,30 @@ public class ClientHandler extends Thread {
                         case -1:
                             run = false;
                             break;
-
                         case 1:
                             DBLogin login = new DBLogin();
-                            System.out.println(inputPackage.getObject());
                             answer = login.login((String) inputPackage.getObject());
-                            System.out.println(answer);
                             outputPackage = new Packet(1, answer.toLowerCase());
                             outputQueue.add(outputPackage);
+                            user = ((String) inputPackage.getObject()).split(" ")[0];
+                            log.setSystemLog(user, "Logged in");
                             break;
                         case 2:
                             DBRegister register = new DBRegister();
-                            answer = register.register((HashMap<String, String>) inputPackage.getObject());
+                            HashMap<String, String> form = (HashMap<String, String>) inputPackage.getObject();
+                            answer = register.register(form);
                             outputPackage = new Packet(2, answer);
                             outputQueue.add(outputPackage);
+                            log.setSystemLog(user, "Registered user: " + form.get("email"));
+                            break;
+                        case 3:
+                            ArrayList tempLog = log.getSystemLog();
+                            outputPackage = new Packet(3, tempLog);
+                            outputQueue.add(outputPackage);
+                            log.setSystemLog(user, "Asked for log");
+                            break;
                         default:
-                            log("Received unknown packet with id " + inputPackage.getId() + " from client " + clientNumber);
+                            log.setSystemLog(user, "Received unknown packet");
                             break;
                     }
                 }
@@ -111,27 +120,11 @@ public class ClientHandler extends Thread {
                 outputThread.join();
                 socket.close();
             } catch (IOException e) {
-                log("Couldn't disconnect client " + clientNumber);
+                System.out.println("Couldn't disconnect client " + clientNumber);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            log("Client " + clientNumber + " has disconnected from the server!");
-        }
-    }
-
-    private static synchronized void log(String message) {
-        try {
-            File file = new File("log.txt");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            if (file.canWrite()) {
-                BufferedWriter writer = new BufferedWriter(new FileWriter("log.txt", true));
-                writer.write(message + "\n");
-                writer.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Client " + clientNumber + " has disconnected from the server!");
         }
     }
 }

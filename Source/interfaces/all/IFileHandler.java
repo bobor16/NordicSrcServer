@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package LogicLayer;
+package interfaces.all;
 
 /**
  *
  * @author mehgn
  */
-public class Costumer extends User{
-
-    public Costumer(String name, String password, String type, String email) {
-        super(name, password, "Customer", email);
-}
+public interface IFileHandler {
+    
 }

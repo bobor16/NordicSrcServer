@@ -55,23 +55,22 @@ public class DBconnect {
         return connection;
     }
 
-    public ArrayList<String> sendQuery(String query) {
-        ArrayList<String> result = new ArrayList<>();
+    public ArrayList<ArrayList> sendQuery(String query) {
+        ArrayList<ArrayList> result = new ArrayList<>();
+        ArrayList<Object> row = new ArrayList<>();
 
         try {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(query);
-                while (rs.next()) {
-                    int i = 1;
-                    while (i < rs.getMetaData().getColumnCount()) {
-                        //System.out.print(rs.getString(i) + " ");
-                        result.add(rs.getString(i));
-                        i++;
-                    }
-                    //System.out.println(rs.getString(i) + " ");
-                    result.add(rs.getString(i));
+            while (rs.next()) {
+                row.clear();
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    System.out.print(rs.getString(i) + " ");
+                    row.add(rs.getObject(i));
                 }
-                System.out.println(result);
+                result.add(row);
+            }
+            System.out.println(result);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,7 +82,6 @@ public class DBconnect {
         System.out.println("Got the statement: " + statement);
         try {
             Statement st = connection.createStatement();
-            System.out.println("Statement created, executing update");
             st.executeUpdate(statement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,41 +90,4 @@ public class DBconnect {
         System.out.println("successfully executed update");
         return "success";
     }
-
-//    public static void viewTable() throws SQLException {
-//        try {
-//            Class.forName("org.postgresql.Driver");
-//        } catch (ClassNotFoundException ex) {
-//            System.out.println(ex);
-//        }
-//        String query = "SELECT email, password, password, type, vertified, cvr FROM users";
-//        Statement stmt = null;
-//
-//        try {
-//            stmt = connection.createStatement();
-//            ResultSet rs = stmt.executeQuery(query);
-//            while (rs.next()) {
-//                String name = rs.getString("name");
-//                String email = rs.getString("email");
-//                String password = rs.getString("password");
-//                String type = rs.getString("type");
-//                boolean vertified = rs.getBoolean("vertified");
-//                int cvr = rs.getInt("cvr");
-//
-//                System.out.println("Name: " + name
-//                        + "email: " + email
-//                        + "password: " + password
-//                        + "type: " + type
-//                        + "vertified: " + vertified
-//                        + "cvr: " + cvr);
-//
-//            }
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//        } finally {
-//            if (stmt != null) {
-//                stmt.close();
-//            }
-//        }
-//    }
 }

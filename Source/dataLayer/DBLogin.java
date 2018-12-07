@@ -5,7 +5,7 @@
  */
 package dataLayer;
 
-import Interfaces.All.iAuthenticate;
+import interfaces.all.iAuthenticate;
 
 import java.util.ArrayList;
 
@@ -19,12 +19,16 @@ public class DBLogin implements iAuthenticate {
         String answer;
         DBconnect connect = new DBconnect();
         String[] userPass = UP.split(" ");
-        String query = "SELECT type FROM users WHERE email='" + userPass[0] + "' AND password='" + userPass[1] + "';";
-        ArrayList<String> result = connect.sendQuery(query);
+        String query = "SELECT type, verified FROM users WHERE email='" + userPass[0] + "' AND password='" + userPass[1] + "';";
+        ArrayList<ArrayList> result = connect.sendQuery(query);
+        ArrayList<Object> row;
         if (result.size() == 0) {
             answer = "invalid";
+        } else if ((boolean)result.get(0).get(1)){
+            row = result.get(0);
+            answer = (String)row.get(0);
         } else {
-            answer = result.get(0);
+            answer = "not verified";
         }
 
         return answer;
