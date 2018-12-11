@@ -68,7 +68,7 @@ public class DBconnect {
                     System.out.print(rs.getString(i) + " ");
                     row.add(rs.getObject(i));
                 }
-                result.add(row);
+                result.add(new ArrayList(row));
             }
             System.out.println(result);
         } catch (SQLException e) {

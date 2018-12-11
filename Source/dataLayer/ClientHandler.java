@@ -22,7 +22,7 @@ public class ClientHandler extends Thread {
     private String user;
     private DBSystemLog log;
 
-    public ClientHandler(Socket socket, int clientNumber){
+    public ClientHandler(Socket socket, int clientNumber) {
         this.socket = socket;
         this.clientNumber = clientNumber;
         this.user = Integer.toString(clientNumber);
@@ -44,9 +44,9 @@ public class ClientHandler extends Thread {
     public void run() {
         try {
             this.outputThread = new Thread(() -> {
-                currentThread().setName("outputThread"+clientNumber);
-                while(run || !outputQueue.isEmpty()){
-                    if (!outputQueue.isEmpty()){
+                currentThread().setName("outputThread" + clientNumber);
+                while (run || !outputQueue.isEmpty()) {
+                    if (!outputQueue.isEmpty()) {
                         try {
                             out.writeObject(outputQueue.poll());
                         } catch (IOException e) {
@@ -57,10 +57,10 @@ public class ClientHandler extends Thread {
             });
 
             this.inputThread = new Thread(() -> {
-                currentThread().setName("inputThread"+clientNumber);
+                currentThread().setName("inputThread" + clientNumber);
                 while (run) {
                     try {
-                        inputQueue.add((Packet)in.readObject());
+                        inputQueue.add((Packet) in.readObject());
                     } catch (IOException | ClassNotFoundException e) {
                         run = false;
                     }
@@ -71,10 +71,10 @@ public class ClientHandler extends Thread {
             inputThread.start();
 
             System.out.println("Client " + clientNumber + " has connected!");
-            outputPackage = new Packet(0,"You successfully connected to the server. You are client: " + clientNumber);
+            outputPackage = new Packet(0, "You successfully connected to the server. You are client: " + clientNumber);
             outputQueue.add(outputPackage);
             String answer;
-
+            DBLogin login = new DBLogin();
             while (run) {
                 if (!inputQueue.isEmpty()) {
                     inputPackage = inputQueue.poll();
@@ -87,7 +87,7 @@ public class ClientHandler extends Thread {
                             run = false;
                             break;
                         case 1:
-                            DBLogin login = new DBLogin();
+
                             answer = login.login((String) inputPackage.getObject());
                             outputPackage = new Packet(1, answer.toLowerCase());
                             outputQueue.add(outputPackage);
@@ -107,6 +107,11 @@ public class ClientHandler extends Thread {
                             outputPackage = new Packet(3, tempLog);
                             outputQueue.add(outputPackage);
                             log.setSystemLog(user, "Asked for log");
+                            break;
+                        case 5:
+                            answer = login.getPassword((String) inputPackage.getObject());
+                            outputPackage = new Packet(5, answer);
+                            outputQueue.add(outputPackage);
                             break;
                         default:
                             log.setSystemLog(user, "Received unknown packet");
