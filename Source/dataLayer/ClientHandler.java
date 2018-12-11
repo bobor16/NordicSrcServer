@@ -108,6 +108,19 @@ public class ClientHandler extends Thread {
                             outputQueue.add(outputPackage);
                             log.setSystemLog(user, "Asked for log");
                             break;
+                        case 4:
+                            DBUsers dbUser = new DBUsers();
+                            ArrayList<Object> userEmail =  new ArrayList<>();
+                            userEmail.addAll(dbUser.displayUsers());
+                            outputPackage = new Packet(4, userEmail);
+                            outputQueue.add(outputPackage);
+                            break;
+                        case 5:
+                            String email = (String)inputPackage.getObject();
+                            dbUser = new DBUsers();
+                            dbUser.deleteUser(user);
+                            break;
+                            
                         default:
                             log.setSystemLog(user, "Received unknown packet");
                             break;

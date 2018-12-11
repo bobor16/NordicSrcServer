@@ -9,25 +9,21 @@ package logicLayer;
  *
  * @author mehgn
  */
-import interfaces.iLogic.Ilogic;
-import interfaces.iData.Idata;
+import Interfaces.iData.IData;
+import interfaces.all.ILogic.Ilogic;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author mehgn
  */
-public class LogicFacade implements interfaces.iLogic.Ilogic {
+public class LogicFacade implements Ilogic {
 
-    private static Idata data;
+    private static IData data;
     private static Ilogic logic;
 
-    private PasswordValidation passwordChecker = new PasswordValidation();
 
-    @Override
-    public void injectData(Idata data) {
-        this.data = data;
-    }
 
     public LogicFacade() {
     }
@@ -37,25 +33,23 @@ public class LogicFacade implements interfaces.iLogic.Ilogic {
     }
 
     @Override
-    public ArrayList getSystemLog() {
-        return data.getSystemLog();
-    }
-
-    @Override
-    public void setSystemLog(String user, String action) {
-        data.setSystemLog(user, action);
-    }
-
-    @Override
-    public void clearSystemLog() {
-        data.clearSystemLog();
+    public void injectData(IData data) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Boolean passwordCheck(String password) {
-        return passwordChecker.checkPassword(password);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String login(String lol){return "";}
+    public void addCaseToList(Case aCase) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void addUserToDataBase(String firstName, String lastName, String password, String type, String email) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

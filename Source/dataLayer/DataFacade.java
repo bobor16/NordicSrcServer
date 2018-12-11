@@ -9,9 +9,9 @@ package dataLayer;
  *
  * @author mehgn
  */
-import interfaces.iLogic.Ilogic;
+import Interfaces.iData.IData;
+import interfaces.all.ILogic.Ilogic;
 import logicLayer.SystemLog;
-import interfaces.iData.Idata;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,9 @@ import java.util.List;
  *
  * @author mehgn
  */
-public class DataFacade implements Idata {
+public class DataFacade implements IData {
 
-    private static Idata data;
+    private static IData data;
     private static Ilogic logic;
     DBSystemLog DBSystemlog;
 
@@ -30,7 +30,7 @@ public class DataFacade implements Idata {
         DBSystemlog = new DBSystemLog();
     }
 
-    public static Idata getInstance() {
+    public static IData getInstance() {
         return data;
     }
 
@@ -39,22 +39,21 @@ public class DataFacade implements Idata {
         this.logic = logic;
     }
 
-    @Override
-    public ArrayList getSystemLog() {
-        return DBSystemlog.getSystemLog();
+//
+//    @Override
+//    public ArrayList<Case> getCaseList() {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+//    
+//
+//
+//    @Override
+//    public void addUserToDataBase(String firstName, String lastName, String password, String type, String email) {
+//    }
+
     }
 
-    @Override
-    public void setSystemLog(String user, String action) {
-        DBSystemlog.setSystemLog(user, action);
-    }
 
-    @Override
-    public void clearSystemLog() {
-        DBSystemlog.clearSystemLog();
-    }
 
-    @Override
-    public String login(String query){return "";}
-}
 
+    

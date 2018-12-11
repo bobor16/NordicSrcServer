@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfaces.all;
+package interfaces.iPresentation;
+
+import interfaces.all.ILogic.Ilogic;
+
 
 /**
  *
  * @author mehgn
  */
-public interface IFileHandler {
-    
+public interface Ipresentation {
+
+    void injectLogic(Ilogic logic);
+
+    void startApplication(String[] args);
 }
