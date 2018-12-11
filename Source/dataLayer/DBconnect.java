@@ -42,6 +42,7 @@ public class DBconnect {
     }
 
     public ArrayList<ArrayList> sendQuery(String query) {
+        System.out.println(query);
         ArrayList<ArrayList> result = new ArrayList<>();
         ArrayList<Object> row = new ArrayList<>();
 
