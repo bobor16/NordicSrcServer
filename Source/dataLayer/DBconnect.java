@@ -38,20 +38,6 @@ public class DBconnect {
     }
 
     public Connection dbConnection() {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.getMessage();
-        }
-        try {
-            DriverManager.getConnection(url, user, password);
-            System.out.println("Successfully connected to the server!");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DBconnect.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Failed to connect to server");
-        }
-
         return connection;
     }
 
@@ -65,12 +51,10 @@ public class DBconnect {
             while (rs.next()) {
                 row.clear();
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    System.out.print(rs.getString(i) + " ");
                     row.add(rs.getObject(i));
                 }
-                result.add(new ArrayList(row));
+                result.add(new ArrayList<>(row));
             }
-            System.out.println(result);
         } catch (SQLException e) {
             e.printStackTrace();
         }
