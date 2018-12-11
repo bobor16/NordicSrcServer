@@ -87,7 +87,6 @@ public class ClientHandler extends Thread {
                             run = false;
                             break;
                         case 1:
-
                             answer = login.login((String) inputPackage.getObject());
                             outputPackage = new Packet(1, answer.toLowerCase());
                             outputQueue.add(outputPackage);
@@ -108,13 +107,13 @@ public class ClientHandler extends Thread {
                             outputQueue.add(outputPackage);
                             log.setSystemLog(user, "Asked for log");
                             break;
-                        case 5:
+                        case 6:
                             answer = login.getPassword((String) inputPackage.getObject());
                             outputPackage = new Packet(5, answer);
                             outputQueue.add(outputPackage);
                             break;
                         default:
-                            log.setSystemLog(user, "Received unknown packet");
+                            log.setSystemLog(user, "Received unknown packet: " + inputPackage.getId());
                             break;
                     }
                 }
