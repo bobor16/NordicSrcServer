@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import logicLayer.order;
 
 public class ClientHandler extends Thread {
 
@@ -109,20 +110,25 @@ public class ClientHandler extends Thread {
                             break;
                         case 4:
                             DBUsers dbUser = new DBUsers();
-                            ArrayList<Object> userEmail =  new ArrayList<>();
+                            ArrayList<Object> userEmail = new ArrayList<>();
                             userEmail.addAll(dbUser.displayUsers());
                             outputPackage = new Packet(4, userEmail);
                             outputQueue.add(outputPackage);
                             break;
                         case 5:
-                            String email = (String)inputPackage.getObject();
+                            String email = (String) inputPackage.getObject();
                             dbUser = new DBUsers();
                             dbUser.deleteUser(user);
                             break;
-                            
+
                         case 6:
                             answer = login.getPassword((String) inputPackage.getObject());
                             outputPackage = new Packet(5, answer);
+                            outputQueue.add(outputPackage);
+                            break;
+                        case 7:
+                            DBOrder dbOrder = new DBOrder();
+                            outputPackage = new Packet(7, dbOrder.getOrderListPending());
                             outputQueue.add(outputPackage);
                             break;
                         default:
