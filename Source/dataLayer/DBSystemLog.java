@@ -5,16 +5,17 @@
  */
 package dataLayer;
 
-import interfaces.all.ISystemLog;
 
 import java.util.ArrayList;
 import java.util.Date;
+import logicLayer.ISystemLog;
 
 /**
  *
  * @author mehgn
  */
 public class DBSystemLog implements ISystemLog {
+    
     @Override
     public ArrayList getSystemLog() {
         DBconnect connection = new DBconnect();
@@ -31,6 +32,7 @@ public class DBSystemLog implements ISystemLog {
 
     @Override
     public void clearSystemLog() {
-
+        DBconnect connection = new DBconnect();
+        connection.sendStatement("");
     }
 }

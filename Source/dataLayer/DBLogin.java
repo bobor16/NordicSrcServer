@@ -5,8 +5,8 @@
  */
 package dataLayer;
 
-import interfaces.all.iAuthenticate;
 
+import Interfaces.all.iAuthenticate;
 import java.util.ArrayList;
 
 /**
