@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 package interfaces.all.ILogic;
-import Interfaces.iData.IData;
+import interfaces.iData.Idata;
 import java.util.List;
 import logicLayer.Case;
 
 public interface Ilogic {
     
-    public void injectData(IData data);
+    public void injectData(Idata data);
     public Boolean passwordCheck(String password);
     public void addCaseToList(Case aCase);
     public void addUserToDataBase(String firstName, String lastName, String password, String type, String email);

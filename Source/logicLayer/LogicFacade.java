@@ -9,8 +9,8 @@ package logicLayer;
  *
  * @author mehgn
  */
-import Interfaces.iData.IData;
 import interfaces.all.ILogic.Ilogic;
+import interfaces.iData.Idata;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class LogicFacade implements Ilogic {
 
-    private static IData data;
+    private static Idata data;
     private static Ilogic logic;
 
 
@@ -33,7 +33,7 @@ public class LogicFacade implements Ilogic {
     }
 
     @Override
-    public void injectData(IData data) {
+    public void injectData(Idata data) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -51,5 +51,6 @@ public class LogicFacade implements Ilogic {
     public void addUserToDataBase(String firstName, String lastName, String password, String type, String email) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 
 }

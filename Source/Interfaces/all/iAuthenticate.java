@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfaces.all;
+package Interfaces.all;
 
 /**
  *
  * @author mehgn
  */
 public interface iAuthenticate {
-    String login(String UP);
+    
 }
