@@ -1,12 +1,6 @@
 package dataLayer;
 
-
-
-import dataLayer.ClientHandler;
-import dataLayer.DBconnect;
-import dataLayer.Packet;
 import java.util.ArrayList;
-import java.util.List;
 import logicLayer.User;
 
 
@@ -25,35 +19,29 @@ public class DBUsers extends DBconnect {
         return row;
     }
     
-    public static void main(String[] args) {
-        DBUsers db = new DBUsers();
-        db.deleteUser("test");
-    }
-    
-    
-    public String login(String UP) {
-        String answer;
-        DBconnect connect = new DBconnect();
-        String[] userPass = UP.split(" ");
-        String query = "SELECT type, verified FROM users WHERE email='" + userPass[0] + "' AND password='" + userPass[1] + "';";
-        ArrayList<ArrayList> result = connect.sendQuery(query);
-        ArrayList<Object> row;
-        if (result.size() == 0) {
-            answer = "invalid";
-        } else if ((boolean)result.get(0).get(1)){
-            row = result.get(0);
-            answer = (String)row.get(0);
-        } else {
-            answer = "not verified";
-        }
-
-        return answer;
-    }
-    
-    
     public void deleteUser(String email) {
         DBconnect connect = new DBconnect();
-        String query = "DELETE from Users WHERE email ='" + email+"';";
-        connect.sendQuery(query);
+        String query = "DELETE FROM users WHERE email ='" + email+"';";
+        connect.sendStatement(query);
+    }
+
+    public User getUser(String email){
+        DBconnect connect = new DBconnect();
+        String query = "Select name, type, companyname, verified, cvr FROM users WHERE email = '" + email + "';";
+        ArrayList<ArrayList> result = connect.sendQuery(query);
+        String name = (String) result.get(0).get(0);
+        String type = (String) result.get(0).get(1);
+        String companyName = (String) result.get(0).get(2);
+        boolean verified = (boolean) result.get(0).get(3);
+        int cvr = (int) result.get(0).get(4);
+
+        User user = new User(email);
+        user.setType(type);
+        user.setName(name);
+        user.setCompanyName(companyName);
+        user.setCvr(cvr);
+        user.setVerified(verified);
+
+        return user;
     }
 }

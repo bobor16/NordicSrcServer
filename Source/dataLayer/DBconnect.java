@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 //import javax.swing.JOptionPane;
 
 /**
- *
  * @author Borgar Bordoy
  */
 public class DBconnect {
@@ -21,7 +20,7 @@ public class DBconnect {
     String user = "si3_2018_group_4";
     String password = "auto92-modal";
 
-    public DBconnect(){
+    public DBconnect() {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -63,7 +62,7 @@ public class DBconnect {
         return result;
     }
 
-    public String sendStatement(String statement){
+    public String sendStatement(String statement) {
         System.out.println("Got the statement: " + statement);
         try {
             Statement st = connection.createStatement();

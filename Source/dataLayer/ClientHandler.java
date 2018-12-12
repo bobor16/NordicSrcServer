@@ -1,5 +1,7 @@
 package dataLayer;
 
+import logicLayer.User;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -75,6 +77,7 @@ public class ClientHandler extends Thread {
             outputPackage = new Packet(0, "You successfully connected to the server. You are client: " + clientNumber);
             outputQueue.add(outputPackage);
             String answer;
+            String email;
             DBLogin login = new DBLogin();
             while (run) {
                 if (!inputQueue.isEmpty()) {
@@ -116,16 +119,21 @@ public class ClientHandler extends Thread {
                             outputQueue.add(outputPackage);
                             break;
                         case 5:
-                            String email = (String) inputPackage.getObject();
+                            email = (String)inputPackage.getObject();
                             dbUser = new DBUsers();
-                            dbUser.deleteUser(user);
+                            dbUser.deleteUser(email);
                             break;
-
                         case 6:
                             answer = login.getPassword((String) inputPackage.getObject());
                             outputPackage = new Packet(5, answer);
                             outputQueue.add(outputPackage);
                             break;
+                        case 30:
+                            email = (String)inputPackage.getObject();
+                            dbUser = new DBUsers();
+                            User usr = dbUser.getUser(email);
+                            outputPackage = new Packet(30, usr);
+                            outputQueue.add(outputPackage);
                         case 7:
                             DBOrder dbOrder = new DBOrder();
                             outputPackage = new Packet(7, dbOrder.getOrderListPending());

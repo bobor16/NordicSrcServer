@@ -6,37 +6,58 @@
 package logicLayer;
 
 /**
- *
  * @author mehgn
  */
 
-public class User {
+public class User implements java.io.Serializable{
 
-    private String firstName;
-    private String lastName;
+    private String name;
     private String password;
     private String type;
     private String email;
+    private String companyName;
+    private boolean verified;
+    private int cvr;
 
-    public User(String firstName, String lastName, String password, String type, String email) {
+    public User(String name, String type, String email) {
         this.password = password;
         this.type = type;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public User(String email) {
+        this.email = email;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    public int getCvr() {
+        return cvr;
+    }
+
+    public void setCvr(int cvr) {
+        this.cvr = cvr;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -63,5 +84,5 @@ public class User {
         this.email = email;
     }
 
-    
+
 }
