@@ -56,6 +56,7 @@ public class DBconnect {
     }
 
     public ArrayList<ArrayList> sendQuery(String query) {
+        System.out.println(query);
         ArrayList<ArrayList> result = new ArrayList<>();
         ArrayList<Object> row = new ArrayList<>();
 
@@ -65,12 +66,10 @@ public class DBconnect {
             while (rs.next()) {
                 row.clear();
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    System.out.print(rs.getString(i) + " ");
                     row.add(rs.getObject(i));
                 }
-                result.add(new ArrayList<>(row));
+                result.add(new ArrayList(row));
             }
-            System.out.println(result);
         } catch (SQLException e) {
             e.printStackTrace();
         }

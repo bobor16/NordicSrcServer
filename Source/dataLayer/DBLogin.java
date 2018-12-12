@@ -24,13 +24,27 @@ public class DBLogin implements iAuthenticate {
         ArrayList<Object> row;
         if (result.size() == 0) {
             answer = "invalid";
-        } else if ((boolean)result.get(0).get(1)){
+        } else if ((boolean) result.get(0).get(1)) {
             row = result.get(0);
-            answer = (String)row.get(0);
+            answer = (String) row.get(0);
         } else {
             answer = "not verified";
         }
 
         return answer;
     }
+
+    public String getPassword(String email) {
+        String answer = "";
+        DBconnect connect = new DBconnect();
+        String query = "SELECT password FROM users WHERE email='" + email + "';";
+        ArrayList<ArrayList> result = connect.sendQuery(query);
+        if (result.size() == 0) {
+            answer = "invalid";
+        } else if (result.size() == 1) {
+            answer = result.get(0).get(0).toString();
+        }
+        return answer;
+    }
+
 }
