@@ -1,6 +1,8 @@
 package dataLayer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import logicLayer.User;
 
 
@@ -43,5 +45,17 @@ public class DBUsers extends DBconnect {
         user.setVerified(verified);
 
         return user;
+    }
+
+    public void updateUser(HashMap<String, String> form){
+        DBconnect connect = new DBconnect();
+        boolean verified;
+        if (form.get("verified").equals("true")){
+            verified = true;
+        } else {
+            verified = false;
+        }
+        String query = "UPDATE users SET companyname = '" + form.get("cname") + "', verified = " + verified + ", cvr = " + form.get("cvr") + " WHERE email='" + form.get("email") + "';";
+        connect.sendStatement(query);
     }
 }

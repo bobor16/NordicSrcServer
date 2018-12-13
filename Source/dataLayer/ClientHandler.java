@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import logicLayer.order;
 
 public class ClientHandler extends Thread {
 
@@ -95,7 +94,7 @@ public class ClientHandler extends Thread {
                             outputPackage = new Packet(1, answer.toLowerCase());
                             outputQueue.add(outputPackage);
                             user = ((String) inputPackage.getObject()).split(" ")[0];
-                            log.setSystemLog(user, "Logged in");
+                            log.setSystemLog(user, "logged in");
                             break;
                         case 2:
                             DBRegister register = new DBRegister();
@@ -103,13 +102,7 @@ public class ClientHandler extends Thread {
                             answer = register.register(form);
                             outputPackage = new Packet(2, answer);
                             outputQueue.add(outputPackage);
-                            log.setSystemLog(user, "Registered user: " + form.get("email"));
-                            break;
-                        case 3:
-                            ArrayList tempLog = log.getSystemLog();
-                            outputPackage = new Packet(3, tempLog);
-                            outputQueue.add(outputPackage);
-                            log.setSystemLog(user, "Asked for log");
+                            log.setSystemLog(user, "registered user: " + form.get("email"));
                             break;
                         case 4:
                             DBUsers dbUser = new DBUsers();
@@ -122,11 +115,13 @@ public class ClientHandler extends Thread {
                             email = (String)inputPackage.getObject();
                             dbUser = new DBUsers();
                             dbUser.deleteUser(email);
+                            log.setSystemLog(user, "deleted user: " + email);
                             break;
                         case 6:
                             answer = login.getPassword((String) inputPackage.getObject());
                             outputPackage = new Packet(5, answer);
                             outputQueue.add(outputPackage);
+                            log.setSystemLog(user, "requested password for user: " + inputPackage.getObject());
                             break;
                         case 30:
                             email = (String)inputPackage.getObject();
@@ -134,13 +129,24 @@ public class ClientHandler extends Thread {
                             User usr = dbUser.getUser(email);
                             outputPackage = new Packet(30, usr);
                             outputQueue.add(outputPackage);
+                            break;
+                        case 31:
+                            ArrayList<String> logs = log.getSystemLog();
+                            outputPackage = new Packet(31, logs);
+                            outputQueue.add(outputPackage);
+                            break;
+                        case 32:
+                            dbUser = new DBUsers();
+                            HashMap<String, String> updateForm = (HashMap<String, String>) inputPackage.getObject();
+                            dbUser.updateUser(updateForm);
+                            break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
                             outputPackage = new Packet(7, dbOrder.getOrderListPending());
                             outputQueue.add(outputPackage);
                             break;
                         default:
-                            log.setSystemLog(user, "Received unknown packet: " + inputPackage.getId());
+                            log.setSystemLog(user, "received unknown packet: " + inputPackage.getId());
                             break;
                     }
                 }

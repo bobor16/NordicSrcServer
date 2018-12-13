@@ -9,8 +9,8 @@ package logicLayer;
  *
  * @author mehgn
  */
-public class order {
-        private int id;
+public class Order implements java.io.Serializable{
+    private int id;
     private String title;
     private int psid;
     private String customer;
@@ -23,7 +23,7 @@ public class order {
     private String deliviryDate;
     private String deadline;
 
-    public order(int id, String title, int psid, String customer, String manufactorer, boolean archived, int amount, double priceper, double pricetotal, String completionDate, String deliviryDate, String deadline, String briefdescription) {
+    public Order(int id, String title, int psid, String customer, String manufactorer, boolean archived, int amount, double priceper, double pricetotal, String completionDate, String deliviryDate, String deadline, String briefdescription) {
         this.id = id;
         this.title = title;
         this.psid = psid;

@@ -17,10 +17,17 @@ import logicLayer.ISystemLog;
 public class DBSystemLog implements ISystemLog {
     
     @Override
-    public ArrayList getSystemLog() {
+    public ArrayList<String> getSystemLog() {
         DBconnect connection = new DBconnect();
-        ArrayList<ArrayList> result = connection.sendQuery("SELECT * FROM SystemLog");
-        return result;
+        ArrayList<ArrayList> result = connection.sendQuery("SELECT logid, userid, action, timestamp FROM log");
+        ArrayList<String> log = new ArrayList<>();
+
+        for (ArrayList entry: result) {
+            String logEntry = "Log ID: " + entry.get(0) + ", User " + entry.get(1) + " " + entry.get(2) + " at " + entry.get(3);
+            log.add(logEntry);
+        }
+
+        return log;
     }
 
     @Override
