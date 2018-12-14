@@ -78,6 +78,8 @@ public class ClientHandler extends Thread {
             String answer;
             String email;
             DBLogin login = new DBLogin();
+            DBOrder order = new DBOrder();
+
             while (run) {
                 if (!inputQueue.isEmpty()) {
                     inputPackage = inputQueue.poll();
@@ -139,6 +141,14 @@ public class ClientHandler extends Thread {
                             dbUser = new DBUsers();
                             HashMap<String, String> updateForm = (HashMap<String, String>) inputPackage.getObject();
                             dbUser.updateUser(updateForm);
+                            break;
+                        case 33:
+                            outputPackage = new Packet(33, order.getOrderList());
+                            outputQueue.add(outputPackage);
+                            break;
+                        case 34:
+                            outputPackage = new Packet(34, order.getOrder((String) inputPackage.getObject()));
+                            outputQueue.add(outputPackage);
                             break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();

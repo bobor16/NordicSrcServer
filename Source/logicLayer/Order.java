@@ -38,12 +38,16 @@ public class Order implements java.io.Serializable{
         this.deadline = deadline;
         this.briefdescription = briefdescription;
     }
+
+    public Order(String title, int amount){
+        this.title = title;
+        this.amount = amount;
+    }
+
     private String briefdescription;
 
-    
-
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -129,6 +133,6 @@ public class Order implements java.io.Serializable{
     public void setBriefdescription(String briefdescription) {
         this.briefdescription = briefdescription;
     }
-    
-            
+
+
 }
