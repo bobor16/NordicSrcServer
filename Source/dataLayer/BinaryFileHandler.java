@@ -11,18 +11,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- *
  * @author mehgn
  */
 public class BinaryFileHandler {
-    
+
     DBconnect dbconnect = new DBconnect();
     File file;
     FileInputStream fis;
     PreparedStatement ps;
 
     public BinaryFileHandler() {
-        
+
         try {
             this.fis = new FileInputStream(file);
         } catch (Exception e) {
@@ -30,12 +29,11 @@ public class BinaryFileHandler {
         }
     }
 
-    public void selectfilePath(String filePath){
-        file  = new File(filePath);
+    public void selectfilePath(String filePath) {
+        file = new File(filePath);
     }
-    
-    
-    
+
+
     public void uploadFile() {
         try {
             dbconnect.dbConnection().prepareStatement("INSERT INTO images VALUES (?, ?)");
@@ -50,21 +48,21 @@ public class BinaryFileHandler {
     }
 
     public void retrieveFile() {
-        try{
-        PreparedStatement ps = dbconnect.dbConnection().prepareStatement("SELECT img FROM images WHERE imgname = ?");
-        ps.setString(1,"myimage.gif");
-        ResultSet rs = ps.executeQuery();
-        if (rs != null) {
-            while (rs.next()) {
-                byte[] imgBytes = rs.getBytes(1);
-                // use the data in some way here
+        try {
+            PreparedStatement ps = dbconnect.dbConnection().prepareStatement("SELECT img FROM images WHERE imgname = ?");
+            ps.setString(1, "myimage.gif");
+            ResultSet rs = ps.executeQuery();
+            if (rs != null) {
+                while (rs.next()) {
+                    byte[] imgBytes = rs.getBytes(1);
+                    // use the data in some way here
+                }
+                rs.close();
             }
-            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        ps.close();
-    } catch(Exception e){
-        e.printStackTrace();
-    }
     }
 
 }

@@ -1,10 +1,7 @@
 package dataLayer;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.*;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,5 +70,40 @@ public class DBconnect {
         }
         System.out.println("successfully executed update");
         return "success";
+    }
+
+    public void sendPreparedStatement(String query, File file) throws SQLException, IOException {
+        PreparedStatement ps = connection.prepareStatement(query);
+        FileInputStream fis = new FileInputStream(file);
+        ps.setString(1, file.getName());
+        ps.setBinaryStream(2, fis, file.length());
+        ps.executeUpdate();
+        ps.close();
+        fis.close();
+    }
+
+    public File getFile(String orderid){
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT ps, psname FROM \"order\" WHERE orderid=?");
+            ps.setInt(1, Integer.parseInt(orderid));
+            ResultSet rs = ps.executeQuery();
+            File file = null;
+            if (rs != null) {
+                while (rs.next()) {
+                    file = new File(rs.getString(2));
+                    byte[] bytes = rs.getBytes(1);
+
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    fileOutputStream.write(bytes);
+                    fileOutputStream.close();
+                }
+                rs.close();
+            }
+            ps.close();
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

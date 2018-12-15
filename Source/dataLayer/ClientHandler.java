@@ -1,5 +1,6 @@
 package dataLayer;
 
+import logicLayer.Order;
 import logicLayer.User;
 
 import java.io.*;
@@ -91,14 +92,14 @@ public class ClientHandler extends Thread {
                         case -1:
                             run = false;
                             break;
-                        case 1:
+                        case 1: //Login
                             answer = login.login((String) inputPackage.getObject());
                             outputPackage = new Packet(1, answer.toLowerCase());
                             outputQueue.add(outputPackage);
                             user = ((String) inputPackage.getObject()).split(" ")[0];
                             log.setSystemLog(user, "logged in");
                             break;
-                        case 2:
+                        case 2: //Register user
                             DBRegister register = new DBRegister();
                             HashMap<String, String> form = (HashMap<String, String>) inputPackage.getObject();
                             answer = register.register(form);
@@ -106,49 +107,58 @@ public class ClientHandler extends Thread {
                             outputQueue.add(outputPackage);
                             log.setSystemLog(user, "registered user: " + form.get("email"));
                             break;
-                        case 4:
+                        case 4: //List users
                             DBUsers dbUser = new DBUsers();
                             ArrayList<Object> userEmail = new ArrayList<>();
                             userEmail.addAll(dbUser.displayUsers());
                             outputPackage = new Packet(4, userEmail);
                             outputQueue.add(outputPackage);
                             break;
-                        case 5:
+                        case 5: //Delete user
                             email = (String)inputPackage.getObject();
                             dbUser = new DBUsers();
                             dbUser.deleteUser(email);
                             log.setSystemLog(user, "deleted user: " + email);
                             break;
-                        case 6:
+                        case 6: //Lost password
                             answer = login.getPassword((String) inputPackage.getObject());
                             outputPackage = new Packet(5, answer);
                             outputQueue.add(outputPackage);
                             log.setSystemLog(user, "requested password for user: " + inputPackage.getObject());
                             break;
-                        case 30:
+                        case 30: //Get user
                             email = (String)inputPackage.getObject();
                             dbUser = new DBUsers();
                             User usr = dbUser.getUser(email);
                             outputPackage = new Packet(30, usr);
                             outputQueue.add(outputPackage);
                             break;
-                        case 31:
+                        case 31: //Get log
                             ArrayList<String> logs = log.getSystemLog();
                             outputPackage = new Packet(31, logs);
                             outputQueue.add(outputPackage);
                             break;
-                        case 32:
+                        case 32: //Update user
                             dbUser = new DBUsers();
                             HashMap<String, String> updateForm = (HashMap<String, String>) inputPackage.getObject();
                             dbUser.updateUser(updateForm);
                             break;
-                        case 33:
-                            outputPackage = new Packet(33, order.getOrderList());
+                        case 33: //Get order list
+                            outputPackage = new Packet(33, order.getOrderList((String) inputPackage.getObject(), user));
                             outputQueue.add(outputPackage);
                             break;
-                        case 34:
+                        case 34: //Get order
                             outputPackage = new Packet(34, order.getOrder((String) inputPackage.getObject()));
                             outputQueue.add(outputPackage);
+                            break;
+                        case 35: //Get product specification
+                            outputPackage = new Packet(35, order.getProductSpecification((String) inputPackage.getObject()));
+                            outputQueue.add(outputPackage);
+                            break;
+                        case 36:
+                            Order tempOrder =(Order) inputPackage.getObject();
+                            tempOrder.setCustomer(this.user);
+                            order.createOrder(tempOrder);
                             break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
