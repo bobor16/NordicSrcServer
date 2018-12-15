@@ -9,7 +9,11 @@ package logicLayer;
  *
  * @author mehgn
  */
-public class Order implements java.io.Serializable{
+public class Order implements java.io.Serializable {
+
+    private static final long serialVersionUID = -7279684461532176262L;
+
+
     private int id;
     private String title;
     private int psid;
@@ -22,8 +26,10 @@ public class Order implements java.io.Serializable{
     private String completionDate;
     private String deliviryDate;
     private String deadline;
+    private Boolean status;
+    private String briefdescription;
 
-    public Order(int id, String title, int psid, String customer, String manufactorer, boolean archived, int amount, double priceper, double pricetotal, String completionDate, String deliviryDate, String deadline, String briefdescription) {
+    public Order(int id, String title, int psid, String customer, String manufactorer, boolean archived, int amount, double priceper, double pricetotal, String completionDate, String deliviryDate, String deadline, String briefdescription, Boolean status) {
         this.id = id;
         this.title = title;
         this.psid = psid;
@@ -37,6 +43,7 @@ public class Order implements java.io.Serializable{
         this.deliviryDate = deliviryDate;
         this.deadline = deadline;
         this.briefdescription = briefdescription;
+        this.status = status;
     }
 
     public Order(String title, int amount){
@@ -134,5 +141,30 @@ public class Order implements java.io.Serializable{
         this.briefdescription = briefdescription;
     }
 
+
+
+    public String getManufactorer() {
+        return manufactorer;
+    }
+
+    public void setManufactorer(String manufactorer) {
+        this.manufactorer = manufactorer;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
 }

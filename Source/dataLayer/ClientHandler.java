@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import logicLayer.Order;
 
 public class ClientHandler extends Thread {
 
@@ -152,7 +153,8 @@ public class ClientHandler extends Thread {
                             break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
-                            outputPackage = new Packet(7, dbOrder.getOrderListPending());
+                            ArrayList<Order> returnList = dbOrder.getOrderListPending(); 
+                            outputPackage = new Packet(7, returnList);
                             outputQueue.add(outputPackage);
                             break;
                         default:
