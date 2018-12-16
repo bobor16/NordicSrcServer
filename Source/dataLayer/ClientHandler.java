@@ -163,6 +163,9 @@ public class ClientHandler extends Thread {
                         case 37: //Delete order
                             order.deleteOrder((String)inputPackage.getObject());
                             break;
+                        case 38:
+                            order.updateOrder((Order)inputPackage.getObject());
+                            break;
                         case 7:
                             outputPackage = new Packet(7, order.getOrderListPending());
                             outputQueue.add(outputPackage);

@@ -88,4 +88,14 @@ public class DBOrder {
         String query = "DELETE FROM \"order\" WHERE orderid=" + id;
         connect.sendStatement(query);
     }
+
+    public void updateOrder(Order order){
+        DBconnect connect = new DBconnect();
+        String query = "UPDATE \"order\" SET title = '" + order.getTitle() + "', amount = " + order.getAmount() + ", priceper = " + order.getPriceper() + ", pricetotal = " + order.getPricetotal() + ", completiondate = '" + order.getCompletionDate() + "', deliverydate = '" + order.getDeliveryDate() + "', deadline = '" + order.getDeadline() + "', psname = ?, ps = ? WHERE orderid=" + order.getId() + ";";
+        try {
+            connect.sendPreparedStatement(query, order.getPs());
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
