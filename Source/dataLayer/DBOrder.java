@@ -58,7 +58,7 @@ public class DBOrder {
         File file = connect.getFile(Integer.toString(order.getId()));
         try {
             byte[] bytes = Files.readAllBytes(file.toPath());
-            order.setPs(file);
+            order.setPsname(file.getName());
             order.setPsBytes(bytes);
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,9 +75,9 @@ public class DBOrder {
 
     public void createOrder(Order order){
         DBconnect connect = new DBconnect();
-        String query = "INSERT INTO \"order\" (title, customer, archived, amount, priceper, pricetotal, completiondate, deliverydate, deadline, briefdescription, status, psname, ps) VALUES ('" + order.getTitle() + "', '" + order.getCustomer() + "', false, " + order.getAmount() + ", " +order.getPriceper() + ", "+ order.getPricetotal() + ", '" + order.getCompletionDate() + "', '" + order.getDeliveryDate() + "', '" + order.getDeadline() + "', '" + order.getBriefdescription() + "', false, ?, ?);";
+        String query = "INSERT INTO \"order\" (title, customer, archived, amount, priceper, pricetotal, completiondate, deliverydate, deadline, briefdescription, status, psname, ps) VALUES ('" + order.getTitle() + "', '" + order.getCustomer() + "', false, " + order.getAmount() + ", " +order.getPriceper() + ", "+ order.getPricetotal() + ", '" + order.getCompletionDate() + "', '" + order.getDeliveryDate() + "', '" + order.getDeadline() + "', '" + order.getBriefdescription() + "', false, '" + order.getPsname() + "', ?);";
         try {
-            connect.sendPreparedStatement(query, order.getPs());
+            connect.sendPreparedStatement(query, order.getPsBytes());
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
@@ -91,9 +91,9 @@ public class DBOrder {
 
     public void updateOrder(Order order){
         DBconnect connect = new DBconnect();
-        String query = "UPDATE \"order\" SET title = '" + order.getTitle() + "', amount = " + order.getAmount() + ", priceper = " + order.getPriceper() + ", pricetotal = " + order.getPricetotal() + ", completiondate = '" + order.getCompletionDate() + "', deliverydate = '" + order.getDeliveryDate() + "', deadline = '" + order.getDeadline() + "', psname = ?, ps = ? WHERE orderid=" + order.getId() + ";";
+        String query = "UPDATE \"order\" SET title = '" + order.getTitle() + "', amount = " + order.getAmount() + ", priceper = " + order.getPriceper() + ", pricetotal = " + order.getPricetotal() + ", completiondate = '" + order.getCompletionDate() + "', deliverydate = '" + order.getDeliveryDate() + "', deadline = '" + order.getDeadline() + "', psname = '" + order.getPsname() + "', ps = ? WHERE orderid=" + order.getId() + ";";
         try {
-            connect.sendPreparedStatement(query, order.getPs());
+            connect.sendPreparedStatement(query, order.getPsBytes());
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
