@@ -7,6 +7,7 @@ package dataLayer;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -55,13 +56,19 @@ public class DBOrder {
         Order order = new Order((int) row.get(0),(String) row.get(1), (String) row.get(2),(String) row.get(3),(boolean) row.get(4),(int) row.get(5),(double) row.get(6),(double) row.get(7),(String) row.get(8),(String) row.get(9),(String) row.get(10),(String) row.get(11));
         System.out.println(order.getBriefdescription());
         File file = connect.getFile(Integer.toString(order.getId()));
-        order.setPs(file);
+        try {
+            byte[] bytes = Files.readAllBytes(file.toPath());
+            order.setPs(file);
+            order.setPsBytes(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return order;
     }
 
-    public File getProductSpecification(String psid){
+    public File getProductSpecification(String orderid){
         DBconnect connect = new DBconnect();
-        File file = connect.getFile(psid);
+        File file = connect.getFile(orderid);
 
         return file;
     }
@@ -74,5 +81,11 @@ public class DBOrder {
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void deleteOrder(String id){
+        DBconnect connect = new DBconnect();
+        String query = "DELETE FROM \"order\" WHERE orderid=" + id;
+        connect.sendStatement(query);
     }
 }

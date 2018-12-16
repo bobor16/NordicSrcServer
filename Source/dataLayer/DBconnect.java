@@ -96,6 +96,7 @@ public class DBconnect {
                     FileOutputStream fileOutputStream = new FileOutputStream(file);
                     fileOutputStream.write(bytes);
                     fileOutputStream.close();
+                    file.deleteOnExit();
                 }
                 rs.close();
             }

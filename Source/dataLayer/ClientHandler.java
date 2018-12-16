@@ -155,14 +155,16 @@ public class ClientHandler extends Thread {
                             outputPackage = new Packet(35, order.getProductSpecification((String) inputPackage.getObject()));
                             outputQueue.add(outputPackage);
                             break;
-                        case 36:
+                        case 36: //Create order
                             Order tempOrder =(Order) inputPackage.getObject();
                             tempOrder.setCustomer(this.user);
                             order.createOrder(tempOrder);
                             break;
+                        case 37: //Delete order
+                            order.deleteOrder((String)inputPackage.getObject());
+                            break;
                         case 7:
-                            DBOrder dbOrder = new DBOrder();
-                            outputPackage = new Packet(7, dbOrder.getOrderListPending());
+                            outputPackage = new Packet(7, order.getOrderListPending());
                             outputQueue.add(outputPackage);
                             break;
                         default:
