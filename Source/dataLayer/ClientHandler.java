@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import logicLayer.Offer;
 import logicLayer.Order;
 
 public class ClientHandler extends Thread {
@@ -81,6 +82,8 @@ public class ClientHandler extends Thread {
             String email;
             DBLogin login = new DBLogin();
             DBOrder order = new DBOrder();
+            DBOffer offer = new DBOffer();
+            
 
             while (run) {
                 if (!inputQueue.isEmpty()) {
@@ -116,7 +119,7 @@ public class ClientHandler extends Thread {
                             outputQueue.add(outputPackage);
                             break;
                         case 5: //Delete user
-                            email = (String)inputPackage.getObject();
+                            email = (String) inputPackage.getObject();
                             dbUser = new DBUsers();
                             dbUser.deleteUser(email);
                             log.setSystemLog(user, "deleted user: " + email);
@@ -128,7 +131,7 @@ public class ClientHandler extends Thread {
                             log.setSystemLog(user, "requested password for user: " + inputPackage.getObject());
                             break;
                         case 30: //Get user
-                            email = (String)inputPackage.getObject();
+                            email = (String) inputPackage.getObject();
                             dbUser = new DBUsers();
                             User usr = dbUser.getUser(email);
                             outputPackage = new Packet(30, usr);
@@ -149,22 +152,45 @@ public class ClientHandler extends Thread {
                             outputQueue.add(outputPackage);
                             break;
                         case 34: //Get order
-                            outputPackage = new Packet(34, order.getOrder((String) inputPackage.getObject()));
-                            outputQueue.add(outputPackage);
+//                            outputPackage = new Packet(34, order.getOrder((String) inputPackage.getObject()));
+//                            outputQueue.add(outputPackage);
                             break;
                         case 35: //Get product specification
                             outputPackage = new Packet(35, order.getProductSpecification((String) inputPackage.getObject()));
                             outputQueue.add(outputPackage);
                             break;
-                        case 36:
-                            Order tempOrder =(Order) inputPackage.getObject();
+                        case 36: //Create order
+                            Order tempOrder = (Order) inputPackage.getObject();
                             tempOrder.setCustomer(this.user);
                             order.createOrder(tempOrder);
                             break;
+                        case 37: //Delete order
+                            order.deleteOrder((String) inputPackage.getObject());
+                            break;
+                        case 38:
+                            order.updateOrder((Order) inputPackage.getObject());
+                            break;
+                        case 39: //Get order list manufacturer
+                            outputPackage = new Packet(39, offer.getOrderListManufacturer());
+                            outputQueue.add(outputPackage);
+                            break;
+                        case 40: //Create offer
+                            Offer tempOffer = (Offer) inputPackage.getObject();
+                            tempOffer.setManfemail(this.user);
+                            offer.createOffer(tempOffer);
+                            break;
+                        case 41: //delete offer
+                            offer.deleteOffer((int) inputPackage.getObject());
+                            break;
+                        case 42: //accept offer
+                            int id = ((int) inputPackage.getObject());
+                            offer.acceptOrder(this.user, id);
+                            break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
-                            ArrayList<Order> returnList = dbOrder.getOrderListPending(); 
+                            ArrayList<Order> returnList = dbOrder.getOrderListPending();
                             outputPackage = new Packet(7, returnList);
+                            outputPackage = new Packet(7, order.getOrderListPending());
                             outputQueue.add(outputPackage);
                             break;
                         default:

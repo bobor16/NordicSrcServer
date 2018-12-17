@@ -26,13 +26,12 @@ public class Order implements java.io.Serializable {
     private double pricetotal;
     private String completionDate;
     private String deliveryDate;
-
-
-
     private String deadline;
     private File ps;
     private Boolean status;
     private String briefdescription;
+    private String psname;
+    private byte[] psBytes;
 
     public Order(int id, String title, int psid, String customer, String manufactorer, boolean archived, int amount, double priceper, double pricetotal, String completionDate, String deliviryDate, String deadline, String briefdescription, Boolean status) {
         this.id = id;
@@ -50,7 +49,7 @@ public class Order implements java.io.Serializable {
         this.status = status;
     }
 
-    public Order(String title, int amount, double priceper, double pricetotal, String completionDate, String deliveryDate, String deadline, String briefdescription, File productSpecification) {
+    public Order(String title, int amount, double priceper, double pricetotal, String completionDate, String deliveryDate, String deadline, String briefdescription, String psname) {
         this.title = title;
         this.archived = false;
         this.amount = amount;
@@ -60,7 +59,7 @@ public class Order implements java.io.Serializable {
         this.deliveryDate = deliveryDate;
         this.deadline = deadline;
         this.briefdescription = briefdescription;
-        this.ps = productSpecification;
+        this.psname = psname;
     }
 
     public Order(String title, int amount){
@@ -68,7 +67,6 @@ public class Order implements java.io.Serializable {
         this.amount = amount;
     }
 
-    private String briefdescription;
 
     public String getTitle() {
         return this.title;
@@ -150,12 +148,12 @@ public class Order implements java.io.Serializable {
         this.briefdescription = briefdescription;
     }
 
-    public File getPs() {
-        return ps;
+    public String getPsname() {
+        return psname;
     }
 
-    public void setPs(File ps) {
-        this.ps = ps;
+    public void setPsname(String psname) {
+        this.psname = psname;
     }
 
     public String getDeadline() {
@@ -174,14 +172,7 @@ public class Order implements java.io.Serializable {
         this.manufactorer = manufactorer;
     }
 
-    public String getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(String deadline) {
-        this.deadline = deadline;
-    }
-
+    
     public Boolean getStatus() {
         return status;
     }
@@ -190,4 +181,7 @@ public class Order implements java.io.Serializable {
         this.status = status;
     }
 
+    public byte[] getPsBytes() { return psBytes; }
+
+    public void setPsBytes(byte[] psBytes) { this.psBytes = psBytes; }
 }
