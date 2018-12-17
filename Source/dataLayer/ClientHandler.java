@@ -170,9 +170,8 @@ public class ClientHandler extends Thread {
                             order.updateOrder((Order) inputPackage.getObject());
                             break;
                         case 39: //Get offer list 
-//                            outputPackage = new packet(39, offer.getOfferList(email, user, MIN_PRIORITY))
-//                            outputQueue.add(outputPackage);
-//                            offer.getOfferList(email, user, offerID)
+                            outputPackage = new Packet(39, offer.getOfferList((String)inputPackage.getObject(), "china@china.dk"));
+                            outputQueue.add(outputPackage);
                             break;
                         case 40: //Create offer
                             Offer tempOffer = (Offer) inputPackage.getObject();
@@ -180,18 +179,18 @@ public class ClientHandler extends Thread {
                             offer.createOffer(tempOffer, this.user);
                             break;
                         case 41: //delete offer
-                            offer.deleteOffer((int) inputPackage.getObject(), this.user);
+                            offer.deleteNonAcceptedOffers((int) inputPackage.getObject(), this.user);
                             break;
                         case 42: //accept offer
                             int id = ((int) inputPackage.getObject());
-                            offer.acceptOrder(this.user, id);
+                            offer.acceptOffer(this.user, id);
                             break;
                         case 43: //get orderID
                             int offerID = ((int) inputPackage.getObject());
-                            int orderID = offer.gerOrderIDFromOfferID(offerID);
+                            int orderID = offer.getOrderIDFromOfferID(offerID);
                             break;
                         case 44: //get order as Manufacturer
-                            outputPackage = new Packet(44, order.getManufacturerList());
+                            outputPackage = new Packet(44, null);
                             outputQueue.add(outputPackage);
                             break;
                         case 7:

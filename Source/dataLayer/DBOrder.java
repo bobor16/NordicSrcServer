@@ -49,9 +49,9 @@ public class DBOrder{
 
         return list;
     }
-    public ArrayList<String> getManufacturerList() {
+    public ArrayList<String> getManufacturerList( ) {
         DBconnect connection = new DBconnect();
-        String   query = "SELECT title FROM \"order\" WHERE manufacturer = NULL and status = 'true'";
+        String query = "SELECT orderid, title FROM \"order\" WHERE manufacturer IS NULL and status = true;";
         ArrayList<ArrayList> result = connection.sendQuery(query);
         ArrayList<String> list = new ArrayList<>();
 
@@ -61,6 +61,7 @@ public class DBOrder{
 
         return list;
     }
+    
     
 
 //    public Order getOrder(String orderID) {
