@@ -33,6 +33,21 @@ public class Order implements java.io.Serializable {
     private String psname;
     private byte[] psBytes;
 
+    public Order(int id, String title, String customer, String manufactorer, boolean archived, int amount, double priceper, double pricetotal, String completionDate, String deliveryDate, String deadline, String briefdescription) {
+        this.id = id;
+        this.title = title;
+        this.customer = customer;
+        this.manufactorer = manufactorer;
+        this.archived = archived;
+        this.amount = amount;
+        this.priceper = priceper;
+        this.pricetotal = pricetotal;
+        this.completionDate = completionDate;
+        this.deliveryDate = deliveryDate;
+        this.deadline = deadline;
+        this.briefdescription = briefdescription;
+    }
+
     public Order(int id, String title, int psid, String customer, String manufactorer, boolean archived, int amount, double priceper, double pricetotal, String completionDate, String deliviryDate, String deadline, String briefdescription, Boolean status) {
         this.id = id;
         this.title = title;

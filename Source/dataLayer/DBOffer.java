@@ -5,7 +5,9 @@
  */
 package dataLayer;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import logicLayer.Offer;
@@ -32,20 +34,31 @@ public class DBOffer {
         String query = "SELECT orderid FROM \"offer\" WHERE offerid = " + offerID + "";
         ArrayList<ArrayList> result = connect.sendQuery(query);
         ArrayList<Integer> list = new ArrayList<>();
-        int orderID = (int)result.get(0).get(0);
+        int orderID = (int) result.get(0).get(0);
         return orderID;
 
     }
 
-    public void deleteNonAcceptedOffers(int id, String acceptedManufacturer) {
+    public String getManufacturerFromOfferID(int offerID) {
         DBconnect connect = new DBconnect();
-        String query = "DELETE FROM \"offer\" WHERE orderid=" + id + " AND manfemail <> '" + acceptedManufacturer + "'";
+        String query = "SELECT manfemail FROM \"offer\" WHERE offerid = " + offerID + "";
+        ArrayList<ArrayList> result = connect.sendQuery(query);
+        ArrayList<Integer> list = new ArrayList<>();
+        String manfemail = (String) result.get(0).get(0);
+
+        return manfemail;
+
+    }
+
+    public void deleteNonAcceptedOffers(int id) {
+        DBconnect connect = new DBconnect();
+        String query = "DELETE FROM \"offer\" WHERE orderid=" + id + " AND manfemail <> '" + getManufacturerFromOfferID(id) + "'";
         connect.sendStatement(query);
     }
 
     public void updateOffer(Offer offer) {
         DBconnect connect = new DBconnect();
-        String query = "UPDATE \"offer\" SET amount = '" + offer.getAmount() + "', priceper = " + offer.getPriceper() + ", pricetotal = " + offer.getPricetotal() + ", completiondate = '" + offer.getCompletionDate() + "', deliverydate = '" + offer.getDeliveryDate() + "', briefdescription = '" + offer.getBriefDescription() + "', psname = '" + offer.getPsName() + "', ps = ? WHERE offerid=" + offer.getOfferID()+ ";";
+        String query = "UPDATE \"offer\" SET amount = '" + offer.getAmount() + "', priceper = " + offer.getPriceper() + ", pricetotal = " + offer.getPricetotal() + ", completiondate = '" + offer.getCompletionDate() + "', deliverydate = '" + offer.getDeliveryDate() + "', briefdescription = '" + offer.getBriefDescription() + "', psname = '" + offer.getPsName() + "', ps = ? WHERE offerid=" + offer.getOfferID() + ";";
         try {
             connect.sendPreparedStatement(query, offer.getPsBytes());
         } catch (SQLException | IOException e) {
@@ -53,15 +66,27 @@ public class DBOffer {
         }
     }
 
-    /*
-     UPDATE Customers
-SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
-WHERE CustomerID = 1;
-     */
-    public void acceptOffer(String manufacturer, int orderID) {
+    public Offer getOrder(String offerID) {
+        DBconnect connect = new DBconnect();
+        String query = "SELECT amount, priceper, pricetotal, completiondate, deliverydate, briefdescription FROM \"order\" WHERE offerid = " + offerID + ";";
+        ArrayList<Object> row = connect.sendQuery(query).get(0);
+        Offer offer = new Offer((int) row.get(0), (double) row.get(1), (double) row.get(2), (String) row.get(3), (String) row.get(4), (String) row.get(5));
+        File file = connect.getFile(Integer.toString(offer.getOfferID()));
+        try {
+            byte[] bytes = Files.readAllBytes(file.toPath());
+            offer.setPsName(file.getName());
+            offer.setPsBytes(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return offer;
+    }
+
+    public void acceptOffer(String UP) {
+        String[] stringArray = UP.split(" ");
         DBconnect connection = new DBconnect();
-        String query = "UPDATE \"order\" SET manufacturer = '" + manufacturer + "', status = 'true' WHERE orderid = " + orderID;
-        deleteNonAcceptedOffers(orderID, manufacturer);
+        String query = "UPDATE \"order\" SET manufacturer = '" + stringArray[0] + "', status = 'true' WHERE orderid = " + stringArray[1];
+        deleteNonAcceptedOffers((Integer.parseInt(stringArray[1])));
         connection.sendStatement(query);
     }
 
@@ -69,9 +94,9 @@ WHERE CustomerID = 1;
         DBconnect connection = new DBconnect();
         String query;
         if (message.equals("pending")) {
-            query = "select title,manfemail from \"order\", offer where \"order\".orderid=offer.orderid and offer.status = 'false'";
+            query = "select title from \"order\",offer where \"order\".orderid=offer.orderid and offer.status = false and manfemail = '" + user + "'";
         } else if (message.equals("approved")) {
-            query = "select title,manfemail from \"order\", offer where \"order\".orderid=offer.orderid and offer.status = 'true'";
+            query = "select title from \"order\", offer where \"order\".orderid=offer.orderid and offer.status = true and manfemail = '" + user + "'";
         } else {
             query = "";
         }
@@ -79,8 +104,9 @@ WHERE CustomerID = 1;
         ArrayList<String> list = new ArrayList<>();
 
         for (ArrayList row : result) {
-            list.add(row.get(0) + " " + row.get(1));
+            list.add((String) row.get(0));
         }
+        System.out.println(list);
         return list;
     }
 
@@ -88,12 +114,13 @@ WHERE CustomerID = 1;
         DBOffer d = new DBOffer();
         Offer offer = new Offer(5, 1, 1000000, 1000000, "2020-04-30", "20-20-06-30", "We can make this for you", "GISDFGFJDSGBFDS", null);
         Offer editOffer = new Offer(5, 2, 10, 10, "2020-04-31", "20-20-06-31", "We CANT make this for you", "GISDFGFJDSGBFDS", null);
-        editOffer.setOfferID(9);
+//        editOffer.setOfferID(9);
         //d.getOrderIDFromOfferID(8);//VIRKER
 //        d.createOffer(offer, "china@china.dk"); VIRKER
         //  d.deleteNonAcceptedOffers(5, "china@china.dk"); VIRKER
 //         d.updateOffer(editOffer); //VIRKER
         // d.acceptOffer("china@china.dk", 5); //VIRKER
-        System.out.println(d.getOfferList("pending", "china@china.dk"));
+        d.getOfferList("pending", "bilka"); //virker ???
+//        System.out.println(d.getManufacturerFromOfferID(10)); //virker ???
     }
 }
