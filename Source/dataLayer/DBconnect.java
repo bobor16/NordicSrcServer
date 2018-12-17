@@ -12,10 +12,10 @@ import java.util.logging.Logger;
  */
 public class DBconnect {
 
-    static Connection connection;
-    String url = "jdbc:postgresql://tek-mmmi-db0a.tek.c.sdu.dk:5432/si3_2018_group_4_db";
-    String user = "si3_2018_group_4";
-    String password = "auto92-modal";
+    private static Connection connection;
+    private String url = "jdbc:postgresql://tek-mmmi-db0a.tek.c.sdu.dk:5432/si3_2018_group_4_db";
+    private String user = "si3_2018_group_4";
+    private String password = "auto92-modal";
 
     public DBconnect() {
         try {

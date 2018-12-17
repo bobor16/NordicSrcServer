@@ -184,7 +184,7 @@ public class ClientHandler extends Thread {
                             break;
                         case 42: //accept offer
                             int id = ((int) inputPackage.getObject());
-                            offer.acceptOrder(this.user, id);
+                            //offer.acceptOrder(this.user, id);
                             break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
