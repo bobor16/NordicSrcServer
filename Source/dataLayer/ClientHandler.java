@@ -83,7 +83,6 @@ public class ClientHandler extends Thread {
             DBLogin login = new DBLogin();
             DBOrder order = new DBOrder();
             DBOffer offer = new DBOffer();
-            
 
             while (run) {
                 if (!inputQueue.isEmpty()) {
@@ -176,15 +175,19 @@ public class ClientHandler extends Thread {
                             break;
                         case 40: //Create offer
                             Offer tempOffer = (Offer) inputPackage.getObject();
-                            tempOffer.setManfemail(this.user);
-                            offer.createOffer(tempOffer);
+//                            tempOffer.setManfemail(this.user);
+                            offer.createOffer(tempOffer, this.user);
                             break;
                         case 41: //delete offer
-                            offer.deleteOffer((int) inputPackage.getObject());
+                            offer.deleteOffer((int) inputPackage.getObject(), this.user);
                             break;
                         case 42: //accept offer
                             int id = ((int) inputPackage.getObject());
-                            offer.acceptOrder(this.user, id);
+                            offer.acceptOrder(this.user, id, id);
+                            break;
+                        case 43: //get orderID
+                            int offerID = ((int) inputPackage.getObject());
+                            int orderID = offer.gerOrderIDFromOfferID(offerID);
                             break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();

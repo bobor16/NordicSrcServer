@@ -5,40 +5,19 @@
  */
 package logicLayer;
 
+import java.io.Serializable;
+
 /**
  *
  * @author mehgn
  */
-public class Offer {
+public class Offer implements Serializable{
 
     private int offerID;
     private int orderID;
-    private Boolean status;
-
-    public int getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
-    }
     private int amount;
-    private double priceper;
-    private double pricetotal;
-    private String completionDate;
-    private String deliveryDate;
-    private String briefDescription;
-    private byte[] psBytes;
-    private String psname;
-
-    public String getPsname() {
-        return psname;
-    }
-
-    public void setPsname(String psname) {
-        this.psname = psname;
-    }
     private String manfemail;
+    private String psName;
 
     public String getManfemail() {
         return manfemail;
@@ -47,6 +26,13 @@ public class Offer {
     public void setManfemail(String manfemail) {
         this.manfemail = manfemail;
     }
+    private double priceper;
+    private double pricetotal;
+    private String completionDate;
+    private String deliveryDate;
+    private String briefDescription;
+    private byte[] psBytes;
+    
 
     public int getOfferID() {
         return offerID;
@@ -108,20 +94,11 @@ public class Offer {
         return psBytes;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
     public void setPsBytes(byte[] psBytes) {
         this.psBytes = psBytes;
     }
 
-    public Offer(int offerID, int orderID, int amount, double priceper, double pricetotal, String completionDate, String deliveryDate, String briefDescription, String psname ,Boolean stauts) {
-        this.offerID = offerID;
+    public Offer(int orderID, int amount, double priceper, double pricetotal, String completionDate, String deliveryDate, String briefDescription, String psName, byte[] psBytes) {
         this.orderID = orderID;
         this.amount = amount;
         this.priceper = priceper;
@@ -129,8 +106,25 @@ public class Offer {
         this.completionDate = completionDate;
         this.deliveryDate = deliveryDate;
         this.briefDescription = briefDescription;
-        this.psname = psname;
-        this.status = status;
+        this.psName = psName;
+        this.psBytes = psBytes;
+        
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public String getPsName() {
+        return psName;
+    }
+
+    public void setPsName(String psName) {
+        this.psName = psName;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
     
