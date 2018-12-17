@@ -83,7 +83,6 @@ public class ClientHandler extends Thread {
             DBLogin login = new DBLogin();
             DBOrder order = new DBOrder();
             DBOffer offer = new DBOffer();
-            
 
             while (run) {
                 if (!inputQueue.isEmpty()) {
@@ -148,7 +147,7 @@ public class ClientHandler extends Thread {
                             dbUser.updateUser(updateForm);
                             break;
                         case 33: //Get order list
-                            outputPackage = new Packet(33, order.getOrderList((String) inputPackage.getObject(), user));
+                            outputPackage = new Packet(33, order.getCustomerOrderList((String) inputPackage.getObject(), user));
                             outputQueue.add(outputPackage);
                             break;
                         case 34: //Get order
@@ -170,21 +169,29 @@ public class ClientHandler extends Thread {
                         case 38:
                             order.updateOrder((Order) inputPackage.getObject());
                             break;
-                        case 39: //Get order list manufacturer
-                            outputPackage = new Packet(39, offer.getOrderListManufacturer());
+                        case 39: //Get offer list 
+                            outputPackage = new Packet(39, offer.getOfferList((String)inputPackage.getObject(), "china@china.dk"));
                             outputQueue.add(outputPackage);
                             break;
                         case 40: //Create offer
                             Offer tempOffer = (Offer) inputPackage.getObject();
-                            tempOffer.setManfemail(this.user);
-                            offer.createOffer(tempOffer);
+//                            tempOffer.setManfemail(this.user);
+                            offer.createOffer(tempOffer, this.user);
                             break;
                         case 41: //delete offer
-                            offer.deleteOffer((int) inputPackage.getObject());
+                            offer.deleteNonAcceptedOffers((int) inputPackage.getObject(), this.user);
                             break;
                         case 42: //accept offer
                             int id = ((int) inputPackage.getObject());
-                            //offer.acceptOrder(this.user, id);
+                            offer.acceptOffer(this.user, id);
+                            break;
+                        case 43: //get orderID
+                            int offerID = ((int) inputPackage.getObject());
+                            int orderID = offer.getOrderIDFromOfferID(offerID);
+                            break;
+                        case 44: //get order as Manufacturer
+                            outputPackage = new Packet(44, null);
+                            outputQueue.add(outputPackage);
                             break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
