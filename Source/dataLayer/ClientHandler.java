@@ -198,6 +198,10 @@ public class ClientHandler extends Thread {
                         case 46: //get orderLIST as Manufacturer
                             order.updateOrder((Order) inputPackage.getObject());
                             break;
+                        case 47:
+                            outputPackage = new Packet(33, order.getManufacturerOfferList((String) inputPackage.getObject(), user));
+                            outputQueue.add(outputPackage);
+                            break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
                             ArrayList<Order> returnList = dbOrder.getOrderListPending();

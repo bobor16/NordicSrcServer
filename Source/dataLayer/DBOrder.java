@@ -110,4 +110,24 @@ public class DBOrder {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<String> getManufacturerOfferList(String message, String user) {
+        DBconnect connection = new DBconnect();
+        String query;
+        if (message.equals("pending")) {
+            query = "SELECT offerid, title FROM \"order\", offer WHERE manufemail = '" + user + "' AND offer.status = false AND offer.orderid=\"order\".orderid";
+        } else if (message.equals("approved")) {
+            query = "SELECT offerid, title FROM \"order\", offer WHERE manufemail = '" + user + "' AND offer.status = true AND offer.orderid=\"order\".orderid";
+        } else {
+            query = "SELECT offerid, title FROM \"order\", offer WHERE manufemail = '" + user + "' AND offer.orderid=\"order\".orderid";
+        }
+        ArrayList<ArrayList> result = connection.sendQuery(query);
+        ArrayList<String> list = new ArrayList<>();
+
+        for (ArrayList row : result) {
+            list.add(row.get(0) + " " + row.get(1));
+        }
+
+        return list;
+    }
 }
