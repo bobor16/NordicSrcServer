@@ -30,7 +30,7 @@ public class DBOrder{
         return orderList;
     }
 
-    public ArrayList<String> getOrderList(String message, String user) {
+    public ArrayList<String> getCustomerOrderList(String message, String user) {
         DBconnect connection = new DBconnect();
         String query;
         if (message.equals("pending")){
@@ -40,6 +40,18 @@ public class DBOrder{
         } else{
             query = "SELECT orderid, title FROM \"order\" WHERE customer = '" + user + "'";
         }
+        ArrayList<ArrayList> result = connection.sendQuery(query);
+        ArrayList<String> list = new ArrayList<>();
+
+        for (ArrayList row : result) {
+            list.add(row.get(0) + " " + row.get(1));
+        }
+
+        return list;
+    }
+    public ArrayList<String> getManufacturerList() {
+        DBconnect connection = new DBconnect();
+        String   query = "SELECT title FROM \"order\" WHERE manufacturer = NULL and status = 'true'";
         ArrayList<ArrayList> result = connection.sendQuery(query);
         ArrayList<String> list = new ArrayList<>();
 

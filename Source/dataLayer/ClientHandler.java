@@ -147,7 +147,7 @@ public class ClientHandler extends Thread {
                             dbUser.updateUser(updateForm);
                             break;
                         case 33: //Get order list
-                            outputPackage = new Packet(33, order.getOrderList((String) inputPackage.getObject(), user));
+                            outputPackage = new Packet(33, order.getCustomerOrderList((String) inputPackage.getObject(), user));
                             outputQueue.add(outputPackage);
                             break;
                         case 34: //Get order
@@ -169,9 +169,10 @@ public class ClientHandler extends Thread {
                         case 38:
                             order.updateOrder((Order) inputPackage.getObject());
                             break;
-                        case 39: //Get order list manufacturer
-                            outputPackage = new Packet(39, offer.getOrderListManufacturer());
-                            outputQueue.add(outputPackage);
+                        case 39: //Get offer list 
+//                            outputPackage = new packet(39, offer.getOfferList(email, user, MIN_PRIORITY))
+//                            outputQueue.add(outputPackage);
+//                            offer.getOfferList(email, user, offerID)
                             break;
                         case 40: //Create offer
                             Offer tempOffer = (Offer) inputPackage.getObject();
@@ -183,11 +184,15 @@ public class ClientHandler extends Thread {
                             break;
                         case 42: //accept offer
                             int id = ((int) inputPackage.getObject());
-                            offer.acceptOrder(this.user, id, id);
+                            offer.acceptOrder(this.user, id);
                             break;
                         case 43: //get orderID
                             int offerID = ((int) inputPackage.getObject());
                             int orderID = offer.gerOrderIDFromOfferID(offerID);
+                            break;
+                        case 44: //get order as Manufacturer
+                            outputPackage = new Packet(44, order.getManufacturerList());
+                            outputQueue.add(outputPackage);
                             break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
