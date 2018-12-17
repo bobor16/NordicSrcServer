@@ -82,6 +82,15 @@ public class Offer implements Serializable{
         this.deliveryDate = deliveryDate;
     }
 
+    public Offer(int amount, double priceper, double pricetotal, String completionDate, String deliveryDate, String briefDescription) {
+        this.amount = amount;
+        this.priceper = priceper;
+        this.pricetotal = pricetotal;
+        this.completionDate = completionDate;
+        this.deliveryDate = deliveryDate;
+        this.briefDescription = briefDescription;
+    }
+
     public String getBriefDescription() {
         return briefDescription;
     }
