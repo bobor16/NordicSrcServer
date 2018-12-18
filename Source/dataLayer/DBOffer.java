@@ -50,9 +50,9 @@ public class DBOffer {
 
     }
 
-    public void deleteNonAcceptedOffers(int id) {
+    public void deleteNonAcceptedOffers(int id, int order) {
         DBconnect connect = new DBconnect();
-        String query = "DELETE FROM offer WHERE NOT offerid = " + id;
+        String query = "DELETE FROM offer WHERE NOT offerid = " + id + " AND orderid = " + order;
         connect.sendStatement(query);
     }
 
@@ -74,12 +74,13 @@ public class DBOffer {
 
     public Offer getOffer(String offerid) {
         DBconnect connect = new DBconnect();
-        String query = "SELECT offer.amount, offer.priceper, offer.pricetotal, offer.completiondate, offer.deliverydate, offer.briefdescription, \"order\".title, offer.orderid FROM offer, \"order\" WHERE offer.offerid = " + offerid + " AND offer.orderid = \"order\".orderid;";
+        String query = "SELECT offer.amount, offer.priceper, offer.pricetotal, offer.completiondate, offer.deliverydate, offer.briefdescription, \"order\".title, offer.orderid, offer.manfemail FROM offer, \"order\" WHERE offer.offerid = " + offerid + " AND offer.orderid = \"order\".orderid;";
         ArrayList<Object> row = connect.sendQuery(query).get(0);
         Offer offer = new Offer((int) row.get(0), (double) row.get(1), (double) row.get(2), (String) row.get(3), (String) row.get(4), (String) row.get(5));
         offer.setTitle((String)row.get(6));
         offer.setOfferID(Integer.parseInt(offerid));
         offer.setOrderID((int)row.get(7));
+        offer.setManfemail((String)(row.get(8)));
         File file = connect.getFile("SELECT ps, psname FROM offer WHERE offerid=?", offerid);
         try {
             byte[] bytes = Files.readAllBytes(file.toPath());
@@ -92,11 +93,15 @@ public class DBOffer {
         return offer;
     }
 
-    public void acceptOffer(String UP) {
-        String[] stringArray = UP.split(" ");
+    public void acceptOffer(String offerid) {
         DBconnect connection = new DBconnect();
-        String query = "UPDATE \"order\" SET manufacturer = '" + stringArray[0] + "', status = 'true' WHERE orderid = " + stringArray[1];
-        deleteNonAcceptedOffers((Integer.parseInt(stringArray[1])));
+        Offer offer = getOffer(offerid);
+        String query = "" +
+                "BEGIN;" +
+                "UPDATE \"order\" SET manufacturer = '" + offer.getManfemail() + "' WHERE orderid = " + offer.getOrderID() +";" +
+                "UPDATE offer SET status = true WHERE orderid = " + offer.getOrderID() + ";" +
+                "COMMIT;";
+        deleteNonAcceptedOffers(offer.getOfferID(), offer.getOrderID());
         connection.sendStatement(query);
     }
 
@@ -109,8 +114,10 @@ public class DBOffer {
             query = "select offerid, title from \"order\", offer where \"order\".orderid=offer.orderid and offer.status = true and manufacturer = '" + user + "'";
         } else if (message.equals("accepted")){
             query = "SELECT offerid, title FROM offer, \"order\" WHERE \"order\".orderid = offer.orderid AND offer.status = true AND customer = '" + user + "'";
-        } else {
+        } else if (message.equals("all")){
             query = "SELECT offerid, title FROM offer, \"order\" WHERE \"order\".orderid=offer.orderid AND offer.status = false AND customer = '" + user + "'";
+        } else {
+            query = "SELECT offerid, title FROM offer, \"order\" WHERE \"order\".orderid=offer.orderid AND offer.status = false AND offer.orderid = " + message + " AND customer = '" + user + "'";
         }
         ArrayList<ArrayList> result = connection.sendQuery(query);
         ArrayList<String> list = new ArrayList<>();
