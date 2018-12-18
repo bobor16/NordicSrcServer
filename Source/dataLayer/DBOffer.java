@@ -5,6 +5,7 @@
  */
 package dataLayer;
 
+import static dataLayer.ClientHandler.getUser;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,7 +19,7 @@ import logicLayer.Order;
  * @author mehgn
  */
 public class DBOffer {
-
+// This class connects to the database and can manipulate the offer table in the database.
     public void createOffer(Offer offer, String user) {
         DBconnect connect = new DBconnect();
         String query = "INSERT INTO \"offer\" (orderid, manfemail, amount, priceper, pricetotal, completiondate,deliverydate,briefdescription,status,psname,ps) VALUES ('" + offer.getOrderID() + "', '" + user + "', '" + offer.getAmount() + "', '" + offer.getPriceper() + "', '" + offer.getPricetotal() + "', '" + offer.getCompletionDate() + "', '" + offer.getDeliveryDate() + "', '" + offer.getBriefDescription() + "', false, '" + offer.getPsName() + "', ?);";

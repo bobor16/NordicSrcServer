@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 public class DBLogin implements iAuthenticate {
 
+    // This class connects to the database and is mostly used to login on the client. 
     public String login(String UP) {
         String answer;
         DBconnect connect = new DBconnect();

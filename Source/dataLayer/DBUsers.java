@@ -8,7 +8,7 @@ import logicLayer.User;
 
 
 public class DBUsers{
-    
+    // This class connects to the database and can manipulate the User table in the database.
     public ArrayList<Object> displayUsers() {
         DBconnect connect = new DBconnect();
         String query = "SELECT email FROM users";

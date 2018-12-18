@@ -15,7 +15,7 @@ import logicLayer.ISystemLog;
  * @author mehgn
  */
 public class DBSystemLog implements ISystemLog {
-    
+    // This class connects to the database and manipulates the systemlog table
     @Override
     public ArrayList<String> getSystemLog() {
         DBconnect connection = new DBconnect();

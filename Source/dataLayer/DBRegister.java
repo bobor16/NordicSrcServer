@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DBRegister {
+    // This class connects to the database and register users to the database
     public String register(HashMap<String, String> form){
         DBconnect connect = new DBconnect();
         ArrayList response = connect.sendQuery("SELECT * FROM users WHERE email='" + form.get("email") + "';");
