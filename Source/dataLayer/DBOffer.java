@@ -52,7 +52,13 @@ public class DBOffer {
 
     public void deleteNonAcceptedOffers(int id) {
         DBconnect connect = new DBconnect();
-        String query = "DELETE FROM \"offer\" WHERE orderid=" + id + " AND manfemail <> '" + getManufacturerFromOfferID(id) + "'";
+        String query = "DELETE FROM offer WHERE NOT offerid = " + id;
+        connect.sendStatement(query);
+    }
+
+    public void deleteOffer(int id){
+        DBconnect connect = new DBconnect();
+        String query = "DELETE FROM offer WHERE offerid=" + id;
         connect.sendStatement(query);
     }
 
@@ -66,13 +72,15 @@ public class DBOffer {
         }
     }
 
-    public Offer getOffer(String offerID) {
+    public Offer getOffer(String offerid) {
         DBconnect connect = new DBconnect();
-        String query = "SELECT offer.amount, offer.priceper, offer.pricetotal, offer.completiondate, offer.deliverydate, offer.briefdescription, \"order\".title FROM offer, \"order\" WHERE offer.offerid = " + offerID + " AND offer.orderid = \"order\".orderid;";
+        String query = "SELECT offer.amount, offer.priceper, offer.pricetotal, offer.completiondate, offer.deliverydate, offer.briefdescription, \"order\".title, offer.orderid FROM offer, \"order\" WHERE offer.offerid = " + offerid + " AND offer.orderid = \"order\".orderid;";
         ArrayList<Object> row = connect.sendQuery(query).get(0);
         Offer offer = new Offer((int) row.get(0), (double) row.get(1), (double) row.get(2), (String) row.get(3), (String) row.get(4), (String) row.get(5));
         offer.setTitle((String)row.get(6));
-        File file = connect.getFile(Integer.toString(offer.getOfferID()));
+        offer.setOfferID(Integer.parseInt(offerid));
+        offer.setOrderID((int)row.get(7));
+        File file = connect.getFile("SELECT ps, psname FROM offer WHERE offerid=?", offerid);
         try {
             byte[] bytes = Files.readAllBytes(file.toPath());
             offer.setPsName(file.getName());
@@ -80,6 +88,7 @@ public class DBOffer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        file.delete();
         return offer;
     }
 
@@ -95,9 +104,11 @@ public class DBOffer {
         DBconnect connection = new DBconnect();
         String query;
         if (message.equals("pending")) {
-            query = "select \"order\".orderid, title from \"order\",offer where \"order\".orderid=offer.orderid and offer.status = false and manfemail = '" + user + "'";
+            query = "select offerid, title from \"order\",offer where \"order\".orderid=offer.orderid and offer.status = false and manfemail = '" + user + "'";
         } else if (message.equals("approved")) {
-            query = "select \"order\".orderid, title from \"order\", offer where \"order\".orderid=offer.orderid and offer.status = true and manfemail = '" + user + "'";
+            query = "select offerid, title from \"order\", offer where \"order\".orderid=offer.orderid and offer.status = true and manufacturer = '" + user + "'";
+        } else if (message.equals("accepted")){
+            query = "SELECT offerid, title FROM offer, \"order\" WHERE \"order\".orderid = offer.orderid AND offer.status = true AND customer = '" + user + "'";
         } else {
             query = "SELECT offerid, title FROM offer, \"order\" WHERE \"order\".orderid=offer.orderid AND offer.status = false AND customer = '" + user + "'";
         }

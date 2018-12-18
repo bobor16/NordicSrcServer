@@ -7,7 +7,7 @@ import logicLayer.User;
 
 
 
-public class DBUsers extends DBconnect {
+public class DBUsers{
     
     public ArrayList<Object> displayUsers() {
         DBconnect connect = new DBconnect();

@@ -79,10 +79,36 @@ public class DBconnect {
         ps.close();
     }
 
-    public File getFile(String orderid){
+    public File getFile(String id){
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT ps, psname FROM \"order\" WHERE orderid=?");
-            ps.setInt(1, Integer.parseInt(orderid));
+            ps.setInt(1, Integer.parseInt(id));
+            ResultSet rs = ps.executeQuery();
+            File file = null;
+            if (rs != null) {
+                while (rs.next()) {
+                    file = new File(rs.getString(2));
+                    byte[] bytes = rs.getBytes(1);
+
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    fileOutputStream.write(bytes);
+                    fileOutputStream.close();
+                    file.deleteOnExit();
+                }
+                rs.close();
+            }
+            ps.close();
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public File getFile(String statement ,String id){
+        try {
+            PreparedStatement ps = connection.prepareStatement(statement);
+            ps.setInt(1, Integer.parseInt(id));
             ResultSet rs = ps.executeQuery();
             File file = null;
             if (rs != null) {

@@ -166,7 +166,7 @@ public class ClientHandler extends Thread {
                         case 37: //Delete order
                             order.deleteOrder((String) inputPackage.getObject());
                             break;
-                        case 38:
+                        case 38: //Update order
                             order.updateOrder((Order) inputPackage.getObject());
                             break;
                         case 39: //Get offer list 
@@ -177,8 +177,8 @@ public class ClientHandler extends Thread {
                             Offer tempOffer = (Offer) inputPackage.getObject();
                             offer.createOffer(tempOffer, this.user);
                             break;
-                        case 41: //delete non accepted offers
-                            offer.deleteNonAcceptedOffers((int) inputPackage.getObject());
+                        case 41: //delete offer
+                            offer.deleteOffer((int) inputPackage.getObject());
                             break;
                         case 42: //accept offer
                             offer.acceptOffer((String) inputPackage.getObject());
@@ -187,7 +187,7 @@ public class ClientHandler extends Thread {
                             int offerID = ((int) inputPackage.getObject());
                             int orderID = offer.getOrderIDFromOfferID(offerID);
                             break;
-                        case 44: //get offer as Manufacturer
+                        case 44: //get offer
                             outputPackage = new Packet(44, offer.getOffer((String) inputPackage.getObject()));
                             outputQueue.add(outputPackage);
                             break;
@@ -195,12 +195,8 @@ public class ClientHandler extends Thread {
                             outputPackage = new Packet(45, order.getManufacturerList());
                             outputQueue.add(outputPackage);
                             break;
-                        case 46: //get orderLIST as Manufacturer
-                            order.updateOrder((Order) inputPackage.getObject());
-                            break;
-                        case 47:
-                            outputPackage = new Packet(33, order.getManufacturerOfferList((String) inputPackage.getObject(), user));
-                            outputQueue.add(outputPackage);
+                        case 46: //Update an offer
+                            offer.updateOffer((Offer) inputPackage.getObject());
                             break;
                           case 48:
                             outputPackage = new Packet(48, this.user);

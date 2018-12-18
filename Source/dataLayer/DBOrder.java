@@ -103,7 +103,7 @@ public class DBOrder {
 
     public void updateOrder(Order order) {
         DBconnect connect = new DBconnect();
-        String query = "UPDATE \"order\" SET title = '" + order.getTitle() + "', amount = " + order.getAmount() + ", priceper = " + order.getPriceper() + ", pricetotal = " + order.getPricetotal() + ", completiondate = '" + order.getCompletionDate() + "', deliverydate = '" + order.getDeliveryDate() + "', deadline = '" + order.getDeadline() + "', psname = '" + order.getPsname() + "', ps = ? WHERE orderid=" + order.getId() + ";";
+        String query = "UPDATE \"order\" SET title = '" + order.getTitle() + "', amount = " + order.getAmount() + ", priceper = " + order.getPriceper() + ", pricetotal = " + order.getPricetotal() + ", completiondate = '" + order.getCompletionDate() + "', deliverydate = '" + order.getDeliveryDate() + "', deadline = '" + order.getDeadline() + "', psname = '" + order.getPsname() + "', ps = ?, briefdescription = '" + order.getBriefdescription() + "' WHERE orderid=" + order.getId() + ";";
         try {
             connect.sendPreparedStatement(query, order.getPsBytes());
         } catch (SQLException | IOException e) {
