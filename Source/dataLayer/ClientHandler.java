@@ -151,8 +151,8 @@ public class ClientHandler extends Thread {
                             outputQueue.add(outputPackage);
                             break;
                         case 34: //Get order
-//                            outputPackage = new Packet(34, order.getOrder((String) inputPackage.getObject()));
-//                            outputQueue.add(outputPackage);
+                            outputPackage = new Packet(34, order.getOrder((String) inputPackage.getObject()));
+                            outputQueue.add(outputPackage);
                             break;
                         case 35: //Get product specification
                             outputPackage = new Packet(35, order.getProductSpecification((String) inputPackage.getObject()));
@@ -188,7 +188,7 @@ public class ClientHandler extends Thread {
                             int orderID = offer.getOrderIDFromOfferID(offerID);
                             break;
                         case 44: //get order as Manufacturer
-                            outputPackage = new Packet(44, (String) inputPackage.getObject());
+                            outputPackage = new Packet(44, offer.getOffer((String)inputPackage.getObject()));
                             outputQueue.add(outputPackage);
                             break;
                         case 45: //get orderLIST as Manufacturer
