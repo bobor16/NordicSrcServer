@@ -202,6 +202,10 @@ public class ClientHandler extends Thread {
                             outputPackage = new Packet(33, order.getManufacturerOfferList((String) inputPackage.getObject(), user));
                             outputQueue.add(outputPackage);
                             break;
+                          case 48:
+                            outputPackage = new Packet(48, this.user);
+                            outputQueue.add(outputPackage);
+                            break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
                             ArrayList<Order> returnList = dbOrder.getOrderListPending();

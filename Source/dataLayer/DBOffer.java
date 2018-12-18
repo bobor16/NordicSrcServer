@@ -113,15 +113,13 @@ public class DBOffer {
 
     public static void main(String[] args) {
         DBOffer d = new DBOffer();
-        Offer offer = new Offer(5, 1, 1000000, 1000000, "2020-04-30", "20-20-06-30", "We can make this for you", "GISDFGFJDSGBFDS", null);
-        Offer editOffer = new Offer(5, 2, 10, 10, "2020-04-31", "20-20-06-31", "We CANT make this for you", "GISDFGFJDSGBFDS", null);
-        editOffer.setOfferID(9);
+       // editOffer.setOfferID(9); //RIKER
         //d.getOrderIDFromOfferID(8);//VIRKER
 //        d.createOffer(offer, "china@china.dk"); VIRKER
         //  d.deleteNonAcceptedOffers(5, "china@china.dk"); VIRKER
 //         d.updateOffer(editOffer); //VIRKER
         // d.acceptOffer("china@china.dk", 5); //VIRKER
         d.getOfferList("pending", "bilka"); //virker ???
-//        System.out.println(d.getManufacturerFromOfferID(10)); //virker ???
+//        System.out.println(d.getManufacturerFromOfferID(10)); //virker 
     }
 }
