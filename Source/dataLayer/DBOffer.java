@@ -99,27 +99,15 @@ public class DBOffer {
         } else if (message.equals("approved")) {
             query = "select \"order\".orderid, title from \"order\", offer where \"order\".orderid=offer.orderid and offer.status = true and manfemail = '" + user + "'";
         } else {
-            query = "SELECT offerid FROM offer, \"order\" WHERE \"order\".orderid=offer.orderid AND offer.status = false AND customer = '" + user + "'";
+            query = "SELECT offerid, title FROM offer, \"order\" WHERE \"order\".orderid=offer.orderid AND offer.status = false AND customer = '" + user + "'";
         }
         ArrayList<ArrayList> result = connection.sendQuery(query);
         ArrayList<String> list = new ArrayList<>();
 
         for (ArrayList row : result) {
-            list.add((String) row.get(0));
+            list.add(row.get(0) + " " + row.get(1));
         }
         System.out.println(list);
         return list;
-    }
-
-    public static void main(String[] args) {
-        DBOffer d = new DBOffer();
-       // editOffer.setOfferID(9); //RIKER
-        //d.getOrderIDFromOfferID(8);//VIRKER
-//        d.createOffer(offer, "china@china.dk"); VIRKER
-        //  d.deleteNonAcceptedOffers(5, "china@china.dk"); VIRKER
-//         d.updateOffer(editOffer); //VIRKER
-        // d.acceptOffer("china@china.dk", 5); //VIRKER
-        d.getOfferList("pending", "bilka"); //virker ???
-//        System.out.println(d.getManufacturerFromOfferID(10)); //virker 
     }
 }
