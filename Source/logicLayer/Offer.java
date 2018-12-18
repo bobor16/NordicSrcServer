@@ -32,7 +32,15 @@ public class Offer implements Serializable{
     private String deliveryDate;
     private String briefDescription;
     private byte[] psBytes;
-    
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public int getOfferID() {
         return offerID;
@@ -107,7 +115,7 @@ public class Offer implements Serializable{
         this.psBytes = psBytes;
     }
 
-    public Offer(int orderID, int amount, double priceper, double pricetotal, String completionDate, String deliveryDate, String briefDescription, String psName, byte[] psBytes) {
+    public Offer(int orderID, int amount, double priceper, double pricetotal, String completionDate, String deliveryDate, String briefDescription, String psName) {
         this.orderID = orderID;
         this.amount = amount;
         this.priceper = priceper;

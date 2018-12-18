@@ -66,11 +66,12 @@ public class DBOffer {
         }
     }
 
-    public Offer getOrder(String offerID) {
+    public Offer getOffer(String offerID) {
         DBconnect connect = new DBconnect();
-        String query = "SELECT amount, priceper, pricetotal, completiondate, deliverydate, briefdescription FROM \"order\" WHERE offerid = " + offerID + ";";
+        String query = "SELECT offer.amount, offer.priceper, offer.pricetotal, offer.completiondate, offer.deliverydate, offer.briefdescription, \"order\".title FROM offer, \"order\" WHERE offer.offerid = " + offerID + " AND offer.orderid = \"order\".orderid;";
         ArrayList<Object> row = connect.sendQuery(query).get(0);
         Offer offer = new Offer((int) row.get(0), (double) row.get(1), (double) row.get(2), (String) row.get(3), (String) row.get(4), (String) row.get(5));
+        offer.setTitle((String)row.get(6));
         File file = connect.getFile(Integer.toString(offer.getOfferID()));
         try {
             byte[] bytes = Files.readAllBytes(file.toPath());
@@ -94,11 +95,11 @@ public class DBOffer {
         DBconnect connection = new DBconnect();
         String query;
         if (message.equals("pending")) {
-            query = "select title from \"order\",offer where \"order\".orderid=offer.orderid and offer.status = false and manfemail = '" + user + "'";
+            query = "select \"order\".orderid, title from \"order\",offer where \"order\".orderid=offer.orderid and offer.status = false and manfemail = '" + user + "'";
         } else if (message.equals("approved")) {
-            query = "select title from \"order\", offer where \"order\".orderid=offer.orderid and offer.status = true and manfemail = '" + user + "'";
+            query = "select \"order\".orderid, title from \"order\", offer where \"order\".orderid=offer.orderid and offer.status = true and manfemail = '" + user + "'";
         } else {
-            query = "";
+            query = "SELECT offerid FROM offer, \"order\" WHERE \"order\".orderid=offer.orderid AND offer.status = false AND customer = '" + user + "'";
         }
         ArrayList<ArrayList> result = connection.sendQuery(query);
         ArrayList<String> list = new ArrayList<>();
@@ -114,7 +115,7 @@ public class DBOffer {
         DBOffer d = new DBOffer();
         Offer offer = new Offer(5, 1, 1000000, 1000000, "2020-04-30", "20-20-06-30", "We can make this for you", "GISDFGFJDSGBFDS", null);
         Offer editOffer = new Offer(5, 2, 10, 10, "2020-04-31", "20-20-06-31", "We CANT make this for you", "GISDFGFJDSGBFDS", null);
-//        editOffer.setOfferID(9);
+        editOffer.setOfferID(9);
         //d.getOrderIDFromOfferID(8);//VIRKER
 //        d.createOffer(offer, "china@china.dk"); VIRKER
         //  d.deleteNonAcceptedOffers(5, "china@china.dk"); VIRKER

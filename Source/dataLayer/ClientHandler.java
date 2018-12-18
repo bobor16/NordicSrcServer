@@ -187,8 +187,8 @@ public class ClientHandler extends Thread {
                             int offerID = ((int) inputPackage.getObject());
                             int orderID = offer.getOrderIDFromOfferID(offerID);
                             break;
-                        case 44: //get order as Manufacturer
-                            outputPackage = new Packet(44, offer.getOffer((String)inputPackage.getObject()));
+                        case 44: //get offer as Manufacturer
+                            outputPackage = new Packet(44, offer.getOffer((String) inputPackage.getObject()));
                             outputQueue.add(outputPackage);
                             break;
                         case 45: //get orderLIST as Manufacturer
@@ -197,6 +197,10 @@ public class ClientHandler extends Thread {
                             break;
                         case 46: //get orderLIST as Manufacturer
                             order.updateOrder((Order) inputPackage.getObject());
+                            break;
+                        case 47:
+                            outputPackage = new Packet(33, order.getManufacturerOfferList((String) inputPackage.getObject(), user));
+                            outputQueue.add(outputPackage);
                             break;
                         case 7:
                             DBOrder dbOrder = new DBOrder();
