@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * @author Borgar Bordoy
  */
 public class DBconnect {
-
+// This class connects to the database via the given URL, username and password. 
     private static Connection connection;
     private String url = "jdbc:postgresql://tek-mmmi-db0a.tek.c.sdu.dk:5432/si3_2018_group_4_db";
     private String user = "si3_2018_group_4";
@@ -37,6 +37,7 @@ public class DBconnect {
         return connection;
     }
 
+    //sends queries to the database
     public ArrayList<ArrayList> sendQuery(String query) {
         System.out.println(query);
         ArrayList<ArrayList> result = new ArrayList<>();
@@ -58,7 +59,7 @@ public class DBconnect {
 
         return result;
     }
-
+//sends statements to the database
     public String sendStatement(String statement) {
         System.out.println("Got the statement: " + statement);
         try {
@@ -79,6 +80,7 @@ public class DBconnect {
         ps.close();
     }
 
+    // Returns files from the order table in the databsae
     public File getFile(String id){
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT ps, psname FROM \"order\" WHERE orderid=?");
@@ -105,6 +107,7 @@ public class DBconnect {
         return null;
     }
 
+    // Returns files from the database
     public File getFile(String statement ,String id){
         try {
             PreparedStatement ps = connection.prepareStatement(statement);

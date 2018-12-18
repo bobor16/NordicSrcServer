@@ -12,7 +12,7 @@ import logicLayer.Offer;
 import logicLayer.Order;
 
 public class ClientHandler extends Thread {
-
+ //This class sends and recieves packets from the clientcontroller in the client project. This class is used to call all methods from the DB classes that needs information to and from the client side
     private Socket socket;
     private int clientNumber;
     private ObjectOutputStream out;
@@ -25,12 +25,14 @@ public class ClientHandler extends Thread {
     private Thread inputThread;
     private boolean run;
     private String user;
+    private static String staticUser;
     private DBSystemLog log;
 
     public ClientHandler(Socket socket, int clientNumber) {
         this.socket = socket;
         this.clientNumber = clientNumber;
         this.user = Integer.toString(clientNumber);
+        staticUser = user;
         try {
             this.out = new ObjectOutputStream(socket.getOutputStream());
             this.in = new ObjectInputStream(socket.getInputStream());
@@ -198,7 +200,7 @@ public class ClientHandler extends Thread {
                         case 46: //Update an offer
                             offer.updateOffer((Offer) inputPackage.getObject());
                             break;
-                          case 48:
+                        case 48:
                             outputPackage = new Packet(48, this.user);
                             outputQueue.add(outputPackage);
                             break;
@@ -227,5 +229,9 @@ public class ClientHandler extends Thread {
             }
             System.out.println("Client " + clientNumber + " has disconnected from the server!");
         }
+    }
+
+    public static String getUser() {
+        return staticUser;
     }
 }

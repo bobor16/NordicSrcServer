@@ -18,7 +18,7 @@ import logicLayer.Order;
  * @author mehgn
  */
 public class DBOrder {
-
+// This class connects to the database and can manipulate the Order table in the database.
     public ArrayList<Order> getOrderListPending() {
         DBconnect connection = new DBconnect();
         ArrayList<ArrayList> result = connection.sendQuery("SELECT * FROM \"order\"");

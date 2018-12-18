@@ -1,7 +1,7 @@
 package dataLayer;
 
 public class Packet implements java.io.Serializable {
-
+// defines a packet 
     private int id;
     private Object object;
 
